@@ -1,16 +1,17 @@
 # Filmotech plugin for Wordpress
-Tags: dvd, movies
-Requires at least: 5.2
-Tested up to: 5.2.4
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+* Tags: dvd, movies
+* Requires at least: 5.2
+* Tested up to: 5.2.4
+* License: GPLv2 or later
+* License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 This plugin lets you show your filmotech list of movies inside your Wordpress site!
 
 ## Description
 
 This plugin use [Filmotech](https://www.filmotech.fr/) publish option. Please note you cannot publish
-to an https only website. 
+to an https only website.
 
 ## Installation
 
