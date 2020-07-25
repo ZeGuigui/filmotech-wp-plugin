@@ -48,55 +48,162 @@ class Filmotech_Admin {
 	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
 	/**
-	 * Register the stylesheets for the admin area.
-	 *
-	 * @since    1.0.0
+	 * List the custom settings
+	 * Settings include :
+	 * - filmotech base folder
+	 * - cover folder name
+	 * - database type : SQLite / MySQL (unsupported in 1.0.0)
+	 * - database name (eg. filmotech)
+	 * - movies table name (eg. fmt_movies)
+	 * - mysql hostname (unsupported in 1.0.0)
+	 * - mysql username (unsupported in 1.0.0)
+	 * - mysql password	(unsupported in 1.0.0)
+	 * @since 1.0.0
 	 */
-	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Filmotech_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Filmotech_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/filmotech-admin.css', array(), $this->version, 'all' );
-
+	private function get_custom_settings() {
+			$settings = array (
+						'filmotech_base_folder' => array(
+							'type' => 'string',
+							'description' => __('Base location of filmotech export files', 'filmotech'),
+							'sanitize_callback' => null,
+							'show_in_rest' => false
+						),
+						'filmotech_cover_folder_name' => array(
+							'type' => 'string',
+							'description' => __('Covers folder name (relative to base location)', 'filmotech'),
+							'sanitize_callback' => null,
+							'show_in_rest' => false
+						),
+						'filmotech_database_type' => array(
+							'type' => 'string',
+							'description' => __('SQlite or MySql database', 'filmotech'),
+							'sanitize_callback' => null,
+							'show_in_rest' => false,
+							'default' => 'sqlite'
+						),
+						'filmotech_database_name' => array(
+							'type' => 'string',
+							'description' => __('Name of database as registered in filmotech publish options', 'filmotech'),
+							'sanitize_callback' => null,
+							'show_in_rest' => false,
+						),
+						'filmotech_movies_table_name' => array(
+							'type' => 'string',
+							'description' => __('Movies table name', 'filmotech'),
+							'sanitize_callback' => null,
+							'show_in_rest' => false,
+							'default' => 'fmt_movies'
+						),
+						'filmotech_mysql_hostname' => array(
+							'type' => 'string',
+							'description' => __('MySQL filmotech hostname (unsupported)', 'filmotech'),
+							'sanitize_callback' => null,
+							'show_in_rest' => false
+						),
+						'filmotech_mysql_username' => array(
+							'type' => 'string',
+							'description' => __('MySQL filmotech username (unsupported)', 'filmotech'),
+							'sanitize_callback' => null,
+							'show_in_rest' => false
+						),
+						'filmotech_mysql_password' => array(
+							'type' => 'string',
+							'description' => __('MySQL filmotech user password (unsupported)', 'filmotech'),
+							'sanitize_callback' => null,
+							'show_in_rest' => false
+						)
+				);
+			return $settings;
 	}
 
 	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
+	 * Callback to display settings page
 	 */
-	public function enqueue_scripts() {
+  public function settings_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+ 			return;
+ 		}
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Filmotech_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Filmotech_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		// Display error messages
+		settings_errors( 'filmotech_messages' );
+		?>
+		<div class="wrap">
+		 <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+		 <form action="options.php" method="post">
+	   <?php
+		    settings_fields('filmotech');
+		 		do_settings_sections('filmotech-options');
+				submit_button('Save settings');
+		 ?>
+	   </form>
+	  </div>
+		<?php
+	}
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/filmotech-admin.js', array( 'jquery' ), $this->version, false );
+	/**
+	 * Add an admin menu to change settings
+	 * @since 1.0.0
+	 */
+	public function admin_menu() {
+		add_options_page(
+			__('Filmotech plugin settings', 'filmotech'),
+			__('Filmotech', 'filmotech'),
+			'manage_options',
+			'filmotech-options',
+			array($this, 'settings_page')
+		);
+	}
+
+	public function setting_input($args) {
+		$value = get_option($args['label_for']);
+		$name  = $args['label_for'];
+
+		if ($name === 'filmotech_database_type') {
+			?>
+			<select id="filmotech_database_type" name="filmotech_database_type">
+				<option <?php if ($value === 'sqlite') { echo "selected"; } ?> value="sqlite"><?php echo __('SQLite','filmotech'); ?></option>
+				<option <?php if ($value === 'mysql')  { echo "selected"; } ?> value="mysql"><?php echo __('MySQL','filmotech'); ?></option>
+			</select>
+			<?php
+		} else {
+		?>
+			<input type="text" id="<?php echo esc_attr($name) ?>" name="<?php echo esc_attr($name) ?>" value="<?php echo esc_attr($value) ?>" /><br/>
+		<?php
+		}
+		?><p class="description"><?php echo esc_html($args['filmotech_setting']['description'])  ?></p><?php
+	}
+
+	/**
+	 * Register the settings page under the wp-admin menu
+	 * @since		1.0.0
+	 */
+	public function init_settings() {
+		$customSettings = $this->get_custom_settings();
+
+		foreach ($customSettings as $setting => $params) {
+			register_setting('filmotech', $setting, $params);
+		}
+
+		add_settings_section("filmotech_settings", __('Filmotech settings','filmotech'), null, 'filmotech-options');
+
+		foreach ($customSettings as $setting => $params) {
+			add_settings_field(
+				$setting,
+				__("$setting&nbsp;:", 'filmotech'),
+				array($this, 'setting_input'),
+				'filmotech-options',
+				'filmotech_settings',
+				array(
+					'label_for' => $setting,
+					'filmotech_setting'   => $params
+				)
+			);
+		}
 
 	}
 

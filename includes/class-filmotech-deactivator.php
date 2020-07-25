@@ -30,7 +30,7 @@ class Filmotech_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		error_log("Filmotech_Deactivator::deactivate");
 	}
 
 }

@@ -23,14 +23,16 @@
 class Filmotech_Activator {
 
 	/**
-	 * Short Description. (use period)
+	 * Setup plugin
 	 *
-	 * Long Description.
+	 * Register options
+	 * Register rewrite rules
 	 *
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		error_log("Filmotech_Activator::activate");
+		flush_rewrite_rules();
 	}
 
 }
