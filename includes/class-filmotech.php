@@ -152,9 +152,7 @@ class FilmotechPlugin {
 	 */
 	private function define_admin_hooks() {
 		error_log("FilmotechPlugin.define_admin_hooks()");
-		$plugin_admin = new Filmotech_Admin( $this->get_plugin_name(), $this->get_version() );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'init_settings');
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu');
+		$plugin_admin = new Filmotech_Admin( $this->get_plugin_name(), $this->get_version(), $this->loader );
 	}
 
 	/**
@@ -166,12 +164,7 @@ class FilmotechPlugin {
 	 */
 	private function define_public_hooks() {
 		error_log("FilmotechPlugin.define_public_hooks()");
-
-		$plugin_public = new Filmotech_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		$plugin_public = new Filmotech_Public( $this->get_plugin_name(), $this->get_version(), $this->loader );
 	}
 
 	/**

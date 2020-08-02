@@ -47,9 +47,14 @@ class Filmotech_Admin {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $loader = null ) {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		if ($loader !== null) {
+			$loader->add_action( 'admin_init', $this, 'init_settings');
+			$loader->add_action( 'admin_menu', $this, 'admin_menu');
+			$loader->add_action( 'wp_dashboard_setup', $this, 'setup_dashboard_widget');
+		}
 	}
 
 	/**
@@ -122,6 +127,25 @@ class Filmotech_Admin {
 	}
 
 	/**
+	 * Setup dashboard widget
+	 */
+	public function setup_dashboard_widget() {
+		wp_add_dashboard_widget('filmotech_dashboard_widget', __('Filmotech', 'filmotech'), array($this, 'dashboard_widget'));
+	}
+
+	/**
+	 * Admin dashboard widget content
+	 */
+	public function dashboard_widget($post, $callback_args) {
+		$databaseType = get_option('filmotech_database_type');
+		if ($databaseType === false) {
+			esc_html_e( 'Filmotech settings not set. See Settings to set your filmotech database.', 'filmotech' );
+			return;
+		}
+		printf( __('Database is %s<br/>Database location&nbsp;: %s','filmotech'), $databaseType, get_option('filmotech_base_folder'));
+	}
+
+	/**
 	 * Callback to display settings page
 	 */
   public function settings_page() {
@@ -159,6 +183,10 @@ class Filmotech_Admin {
 		);
 	}
 
+	/**
+	 * Display appropriate input type for a setting
+	 * @since 1.0.0
+	 */
 	public function setting_input($args) {
 		$value = get_option($args['label_for']);
 		$name  = $args['label_for'];

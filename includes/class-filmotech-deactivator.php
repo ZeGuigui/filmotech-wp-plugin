@@ -31,6 +31,7 @@ class Filmotech_Deactivator {
 	 */
 	public static function deactivate() {
 		error_log("Filmotech_Deactivator::deactivate");
+		flush_rewrite_rules();
 	}
 
 }

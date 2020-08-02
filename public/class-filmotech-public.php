@@ -47,57 +47,168 @@ class Filmotech_Public {
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $loader ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		$loader->add_filter('query_vars', $this, 'register_filmotech_vars');
+		$loader->add_action('parse_request', $this, 'parse_filmotech_requests');
+	}
+
+	public function getDbConnection() {
+		$BASE_FOLDER = get_option('filmotech_base_folder');
+		$DB_TYPE     = get_option('filmotech_database_type');
+		$DB_SERVER   = get_option('filmotech_mysql_hostname');
+    $DB_USER     = get_option('filmotech_mysql_username');
+    $DB_PASSWORD = get_option('filmotech_mysql_password');
+    $DB_NAME     = get_option('filmotech_database_name');
+    $DB_TABLE    = get_option('filmotech_movies_table_name');
+
+		try {
+			if ($DB_TYPE === 'sqlite') {
+				$db = new PDO('sqlite:'. $BASE_FOLDER . '/' . $DB_NAME .'.sqlite3');
+			} else {
+				$db = new PDO('mysql:host=' . $DB_SERVER . ';dbname=' . $DB_NAME, $DB_USER, $DB_PASSWORD);
+				$db->query("SET NAMES UTF8");
+			}
+		} catch (Exception $e) {
+			error_log(__('Filmotech database error: ','filmotech') . $e->getMessage());
+			die(__('Filmotech database error: ','filmotech') . $e->getMessage());
+		}
+
+		return $db;
+	}
+
+	public function getMovieList($page) {
+		$DB_TABLE    = get_option('filmotech_movies_table_name'); // 'fmt_movies';
+		if (empty($DB_TABLE)) {
+			$DB_TABLE = 'fmt_movies';
+		}
+
+		$db = $this->getDbConnection();
+
+		$query = "SELECT count(*) from " . $DB_TABLE;
+		$result = $db->query($query);
+		$result_fetch = $result->fetch();
+		$total_record = $result_fetch[0];
+		$result->closeCursor();
+
+		return sprintf(__('There are %d movies in the database. Requested page %d','filmotech'), $total_record, $page);
+
+	}
+
+	public function getMovie($id) {
+
 	}
 
 	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
+	 * Generate a virtual page using current template
+	 * @since 1.0.0
 	 */
-	public function enqueue_styles() {
+	public function get_virtual_content($posts) {
+		// Virtual post
+		$post = new stdClass();
+		global $wp_query;
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Filmotech_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Filmotech_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		$filmotechId = intval($wp_query->query_vars['filmotech'], 10);
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/filmotech-public.css', array(), $this->version, 'all' );
+		if ($filmotechId > 0) {
+			$title    = 'Filmotech movie ' . $filmotechId;
+			$content  = '<p>Hello World</p><p>Requested ID:' . $filmotechId . '</p>';
+			$pageDate = current_time( 'mysql' );
+			$gmtDate  = current_time( 'mysql', 1 );
+		} else {
+			$page     = isset($wp_query->query_vars['page']) ? intval($wp_query->query_vars['page'],10) : 0;
+			$title    = __('Filmotech movie list', 'filmotech');
+			$content  = $this->getMovieList($page);
+			$pageDate = current_time( 'mysql' );
+			$gmtDate  = current_time( 'mysql', 1 );
+		}
 
+		// fill properties of $post with everything a page in the database would have
+		$post->ID = -1;                          // use an illegal value for page ID
+		$post->post_author           =  1;   // post author id
+		$post->post_date             = $pageDate;
+		$post->post_date_gmt         = $gmtDate;
+		$post->post_content          = $content; // '<p>Hello World</p><p>Requested ID:' . $filmotechId . '</p>';
+		$post->post_title            = $title;   // 'Virtual page Hello World!';
+		$post->post_excerpt          = '';
+		$post->post_status           = 'publish';
+		$post->comment_status        = 'closed';        // mark as closed for comments, since page doesn't exist
+		$post->ping_status           = 'closed';           // mark as closed for pings, since page doesn't exist
+		$post->post_password         = '';               // no password
+		$post->post_name             = 'filmotech';
+		$post->to_ping               = '';
+		$post->pinged                = '';
+		$post->post_modified         = $post->post_date;
+		$post->post_modified_gmt     = $post->post_date_gmt;
+		$post->post_content_filtered = '';
+		$post->post_parent           = 0;
+		$post->guid                  = get_home_url( '/filmotech' );
+		$post->menu_order            = 0;
+		$post->post_type             = 'page';
+		$post->post_mime_type        = '';
+		$post->comment_count         = 0;
+		$post->ancestors             = array();
+
+		// allows for any last minute updates to the $post content
+		$post = apply_filters( 'filmotech_virtual_page_content', $post );
+
+		// set filter results
+		$posts = array( $post );
+
+		// reset wp_query properties to simulate a found page
+		$wp_query->is_page = TRUE;
+		$wp_query->is_singular = TRUE;
+		$wp_query->is_home = FALSE;
+		$wp_query->is_archive = FALSE;
+		$wp_query->is_category = FALSE;
+		unset( $wp_query->query['error'] );
+		$wp_query->query_vars['error'] = '';
+		$wp_query->is_404 = FALSE;
+
+		// Simulate results!
+		$wp_query->post = $post;
+		$wp_query->posts = array($post);
+		$wp_query->queried_object = $post;
+		$wp_query->queried_object_id = $post->ID;
+		$wp_query->current_post = $post->ID;
+		$wp_query->post_count = 1;
+
+		return array($post);
+	}
+
+	public function template_redir() {
+		get_template_part('page');
+		exit;
 	}
 
 	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
+	 * Check for filmotech requests
+	 * @since 1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function parse_filmotech_requests(&$wp) {
+		$queryVars = $wp->query_vars;
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Filmotech_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Filmotech_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		if (isset($wp->query_vars['filmotech'])) {
+			$filmotechId = intval($wp->query_vars['filmotech'], 10);
+			add_action('template_redirect', array($this, 'template_redir'));
+			add_filter('the_posts', array($this, 'get_virtual_content'));
+			return;
+		}
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/filmotech-public.js', array( 'jquery' ), $this->version, false );
+		return;
+	}
 
+	/**
+	 * Register plugin vars
+	 * @since 1.0.0
+	 */
+	public function register_filmotech_vars($vars) {
+		$vars[] = 'filmotech';
+		$vars[] = 'page';
+		return $vars;
 	}
 
 }
