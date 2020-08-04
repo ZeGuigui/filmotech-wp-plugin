@@ -10,6 +10,8 @@
  * @subpackage Filmotech/public
  */
 
+define ('BROWSER_CACHE_LIFETIME', 90 * 24 * 60 * 60);	// 90 days
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -80,6 +82,27 @@ class Filmotech_Public {
 		return $db;
 	}
 
+	/**
+	 * Generate movie URL
+	 * @since 1.0.0
+	 */
+	public function getMovieUrl($movie) {
+		global $wp_rewrite;
+		$link = $wp_rewrite->get_page_permastruct();
+		$link = str_replace('%pagename%', 'filmotech/movie/' . $movie['ID'] . '-' . $movie['TitreVF'], $link);
+		return home_url('/') . $link;
+	}
+
+	public function getPageUrl($page) {
+		global $wp_rewrite;
+		$link = $wp_rewrite->get_page_permastruct();
+		$link = str_replace('%pagename%', "filmotech/$page", $link);
+		return home_url('/') . $link;
+	}
+
+	/**
+	 * Generate movie list HTML content
+	 */
 	public function getMovieList($page) {
 		$DB_TABLE    = get_option('filmotech_movies_table_name'); // 'fmt_movies';
 		if (empty($DB_TABLE)) {
@@ -94,12 +117,96 @@ class Filmotech_Public {
 		$total_record = $result_fetch[0];
 		$result->closeCursor();
 
-		return sprintf(__('There are %d movies in the database. Requested page %d','filmotech'), $total_record, $page);
+		$recordsPerPage = get_option('filmotech_movies_per_page');
+		if (empty($recordsPerPage) || $recordsPerPage == 0) {
+			$recordsPerPage = 20;
+		}
 
+		$offset = $offset = ($page-1) * $recordsPerPage;
+
+		$query = "SELECT ID, TitreVF, Genre, Annee, Edition FROM $DB_TABLE order by TitreVF LIMIT $recordsPerPage OFFSET $offset ";
+		$result = $db->query($query);
+		$movies = $result->fetchAll(PDO::FETCH_BOTH);
+		$result->closeCursor();
+
+		$html = '<table id="filmotechMovieList">'
+				  . '<thead>'
+					. '<tr>'
+					. '<th scope="col">' . __('French title','filmotech') . '</th>'
+					. '<th scope="col">' . __('Year', 'filmotech') . '</th>'
+					. '<th scope="col">' . __('Edition', 'filmotech') . '</th>'
+					. '<th scope="col">' . __('Categories', 'filmotech') . '</th>'
+					. '</tr>'
+					. '</thead>'
+					. '<tbody>'
+					. PHP_EOL
+					;
+		foreach ($movies as $movie) {
+			$permalink = $this->getMovieUrl($movie);
+			$html .= '<tr>'
+						.  '	<td>'
+						.					'<a href="' . esc_url($permalink) . '" class="movieLink">'
+						. 				esc_html($movie['TitreVF']) . '</a>'
+						. 				'</td>' . PHP_EOL
+						.  '	<td>' . esc_html($movie['Annee'])   . '</td>' . PHP_EOL
+						.  '	<td>' . esc_html($movie['Edition']) . '</td>' . PHP_EOL
+						.  '	<td>' . esc_html($movie['Genre'])   . '</td>' . PHP_EOL
+						.  '</tr>' . PHP_EOL
+						;
+		}
+
+		$html .= '</tbody></table>'
+					.  '<p>' . sprintf(__('There are %d movies in the database.','filmotech'), $total_record) . '</p>'
+					;
+
+		$number_of_pages = ceil($total_record / $recordsPerPage);
+
+		// Add page navigation
+		if ($number_of_pages > 1) {
+			$html .= '<ul class="default-wp-page clearfix">';
+			if ($page > 1) {
+				$html .= '<li style="list-style: none;" class="previous">'
+							.  '<a href="' . esc_attr($this->getPageUrl($page - 1)) . '">' . __('← Previous', 'filmotech') . '</a>'
+							.  '</li>'
+							;
+			}
+			if ($page < $number_of_pages) {
+				$html .= '<li style="list-style: none;" class="next">'
+						  .  '<a href="' . esc_attr($this->getPageUrl($page + 1)) . '">' . __('Next →', 'filmotech') . '</a>'
+							.  '</li>'
+							;
+			}
+			$html .= '</ul>';
+		}
+
+		return $html;
 	}
 
 	public function getMovie($id) {
+		$DB_TABLE    = get_option('filmotech_movies_table_name'); // 'fmt_movies';
+		$db = $this->getDbConnection();
 
+		$query = "SELECT * from " . $DB_TABLE . " WHERE ID = :id";
+		$statement = $db->prepare($query);
+		$statement->execute(array(':id' => $id));
+		$movie = $statement->fetch(PDO::FETCH_OBJ);
+		$statement->closeCursor();
+
+		// Generate cover URL
+		global $wp_rewrite;
+		$link = $wp_rewrite->get_page_permastruct();
+		$link = str_replace('%pagename%', 'filmotech/cover/' . $id, $link);
+		$movie->coverUrl = home_url('/') . $link;
+
+		return $movie;
+	}
+
+	public function getMovieContent($movie) {
+		ob_start();
+		include_once plugin_dir_path(__FILE__) . 'partials/filmotech-movie-display.php';
+		$result = ob_get_contents();
+		ob_end_clean();
+		return $result;
 	}
 
 	/**
@@ -114,8 +221,12 @@ class Filmotech_Public {
 		$filmotechId = intval($wp_query->query_vars['filmotech'], 10);
 
 		if ($filmotechId > 0) {
-			$title    = 'Filmotech movie ' . $filmotechId;
-			$content  = '<p>Hello World</p><p>Requested ID:' . $filmotechId . '</p>';
+			$movie    = $this->getMovie($filmotechId);
+			$title    = $movie->TitreVF;
+			if ($movie->Annee > 0) {
+				$title .= ' (' . $movie->Annee . ')';
+			}
+			$content  = $this->getMovieContent($movie);
 			$pageDate = current_time( 'mysql' );
 			$gmtDate  = current_time( 'mysql', 1 );
 		} else {
@@ -193,6 +304,52 @@ class Filmotech_Public {
 
 		if (isset($wp->query_vars['filmotech'])) {
 			$filmotechId = intval($wp->query_vars['filmotech'], 10);
+
+			if (isset($wp->query_vars['cover'])) {
+				$basepath  = get_option('filmotech_base_folder');
+				$coverpath = get_option('filmotech_cover_folder_name');
+				$coverFile = sprintf("%s/%s/Filmotech_%05d.jpg", $basepath, $coverpath, $filmotechId);
+				if (is_file($coverFile)) {
+					// Check for HTTP cache
+					if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+						$previousETag = $_SERVER['HTTP_IF_NONE_MATCH'];
+						$eTag = md5_file($coverFile);
+						if ($previousETag == $eTag) {
+							header("Expires: " . date("r", time() + BROWSER_CACHE_LIFETIME));
+							header("Cache-Control: max-age=" . BROWSER_CACHE_LIFETIME );
+							header("ETag: $eTag");
+							header('HTTP/1.0 304 Not Modified');
+							die;
+						}
+					}
+					// Serve file content
+					$cover = file_get_contents($coverFile);
+					header("Content-type: image/jpg");
+					header("Content-Length: " . filesize($coverFile));
+					header("Expires: " . date("r", time() + BROWSER_CACHE_LIFETIME));
+					header("Cache-Control: max-age=" . BROWSER_CACHE_LIFETIME );
+					header("Pragma:");
+					header("ETag: " . md5_file($coverFile));
+					echo $cover;
+				} else {
+					//TODO Return a default cover... 404 in the meanwhile!
+					header("HTTP/1.0 404 Not Found", false, 404);
+					echo <<<EOF
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>Cover not found</title>
+</head>
+<body>
+<p>Cover not found... so sad!</p>
+</body>
+</html>
+EOF;
+				}
+				die;
+			}
+
 			add_action('template_redirect', array($this, 'template_redir'));
 			add_filter('the_posts', array($this, 'get_virtual_content'));
 			return;
@@ -208,6 +365,7 @@ class Filmotech_Public {
 	public function register_filmotech_vars($vars) {
 		$vars[] = 'filmotech';
 		$vars[] = 'page';
+		$vars[] = 'cover';
 		return $vars;
 	}
 

@@ -121,6 +121,13 @@ class Filmotech_Admin {
 							'description' => __('MySQL filmotech user password (unsupported)', 'filmotech'),
 							'sanitize_callback' => null,
 							'show_in_rest' => false
+						),
+						'filmotech_movies_per_page' => array(
+							'type' => 'string',
+							'description' => __('Number of items per page on list of movies', 'filmotech'),
+							'sanitize_callback' => null,
+							'default' => '20',
+							'show_in_rest' => false
 						)
 				);
 			return $settings;
@@ -196,6 +203,21 @@ class Filmotech_Admin {
 			<select id="filmotech_database_type" name="filmotech_database_type">
 				<option <?php if ($value === 'sqlite') { echo "selected"; } ?> value="sqlite"><?php echo __('SQLite','filmotech'); ?></option>
 				<option <?php if ($value === 'mysql')  { echo "selected"; } ?> value="mysql"><?php echo __('MySQL','filmotech'); ?></option>
+			</select>
+			<?php
+		} elseif ($name == 'filmotech_movies_per_page') {
+			?>
+			<select id="filmotech_movies_per_page" name="filmotech_movies_per_page">
+				<option <?php if ($value === '10')  { echo "selected"; } ?> value="10">10</option>
+				<option <?php if ($value === '20')  { echo "selected"; } ?> value="20">20</option>
+				<option <?php if ($value === '30')  { echo "selected"; } ?> value="30">30</option>
+				<option <?php if ($value === '40')  { echo "selected"; } ?> value="40">40</option>
+				<option <?php if ($value === '50')  { echo "selected"; } ?> value="50">50</option>
+				<option <?php if ($value === '60')  { echo "selected"; } ?> value="60">60</option>
+				<option <?php if ($value === '70')  { echo "selected"; } ?> value="70">70</option>
+				<option <?php if ($value === '80')  { echo "selected"; } ?> value="80">80</option>
+				<option <?php if ($value === '90')  { echo "selected"; } ?> value="90">90</option>
+				<option <?php if ($value === '100') { echo "selected"; } ?> value="100">100</option>
 			</select>
 			<?php
 		} else {
