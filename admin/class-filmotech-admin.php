@@ -70,7 +70,7 @@ class Filmotech_Admin {
 	 * - mysql password	(unsupported in 1.0.0)
 	 * @since 1.0.0
 	 */
-	private function get_custom_settings() {
+	private static function get_custom_settings() {
 			$settings = array (
 						'filmotech_base_folder' => array(
 							'type' => 'string',
@@ -229,11 +229,22 @@ class Filmotech_Admin {
 	}
 
 	/**
+	 * Uninstall
+	 * @since 1.0.0
+	 */
+	public static function uninstall() {
+		$customSettings = self::get_custom_settings();
+		foreach ($customSettings as $setting => $params) {
+			delete_option($setting);
+		}
+	}
+
+	/**
 	 * Register the settings page under the wp-admin menu
 	 * @since		1.0.0
 	 */
 	public function init_settings() {
-		$customSettings = $this->get_custom_settings();
+		$customSettings = self::get_custom_settings();
 
 		foreach ($customSettings as $setting => $params) {
 			register_setting('filmotech', $setting, $params);

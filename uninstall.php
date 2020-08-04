@@ -29,3 +29,8 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+require plugin_dir_path( __FILE__ ) . 'includes/class-filmotech.php';
+
+$plugin = new FilmotechPlugin();
+$plugin->uninstall();

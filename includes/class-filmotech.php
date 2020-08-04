@@ -151,7 +151,6 @@ class FilmotechPlugin {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-		error_log("FilmotechPlugin.define_admin_hooks()");
 		$plugin_admin = new Filmotech_Admin( $this->get_plugin_name(), $this->get_version(), $this->loader );
 	}
 
@@ -163,7 +162,6 @@ class FilmotechPlugin {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		error_log("FilmotechPlugin.define_public_hooks()");
 		$plugin_public = new Filmotech_Public( $this->get_plugin_name(), $this->get_version(), $this->loader );
 	}
 
@@ -205,6 +203,14 @@ class FilmotechPlugin {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Run uninstall task for plugin
+	 * @since 1.0.0
+	 */
+	public function uninstall() {
+		Filmotech_Admin::uninstall();
 	}
 
 }
