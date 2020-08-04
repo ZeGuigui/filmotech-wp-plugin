@@ -260,7 +260,7 @@ class Filmotech_Public {
 
 	public function getMovieContent($movie) {
 		ob_start();
-		include_once plugin_dir_path(__FILE__) . 'partials/filmotech-movie-display.php';
+		include plugin_dir_path(__FILE__) . 'partials/filmotech-movie-display.php';
 		$result = ob_get_contents();
 		ob_end_clean();
 		return $result;
