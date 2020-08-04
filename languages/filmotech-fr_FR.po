@@ -1,0 +1,208 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Filmotech wordpress plugin\n"
+"POT-Creation-Date: 2020-08-04 23:39+0200\n"
+"PO-Revision-Date: 2020-08-04 23:44+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin/class-filmotech-admin.php:77
+msgid "Base location of filmotech export files"
+msgstr "Emplacement de base des fichiers Filmotech"
+
+#: admin/class-filmotech-admin.php:80
+msgid "Base folder"
+msgstr "Dossier de base"
+
+#: admin/class-filmotech-admin.php:84
+msgid "Covers folder name (relative to base location)"
+msgstr "Nom du dossier des affiches (relatif à l’emplacement de base)"
+
+#: admin/class-filmotech-admin.php:87
+msgid "Cover folder"
+msgstr "Dossier des affiches"
+
+#: admin/class-filmotech-admin.php:91
+msgid "SQlite or MySql database"
+msgstr "Base de données SQLite ou MySQL"
+
+#: admin/class-filmotech-admin.php:95
+msgid "Database type"
+msgstr "Type de base de données"
+
+#: admin/class-filmotech-admin.php:99
+msgid "Name of database as registered in filmotech publish options"
+msgstr ""
+"Nom de la base de données telle que configurée dans les options de "
+"publication de Filmotech"
+
+#: admin/class-filmotech-admin.php:102
+msgid "Database name"
+msgstr "Nom de la base de données"
+
+#: admin/class-filmotech-admin.php:106
+msgid "Movies table name"
+msgstr "Nom de table contenant les films"
+
+#: admin/class-filmotech-admin.php:110
+msgid "Movie table"
+msgstr "Table contenant les films"
+
+#: admin/class-filmotech-admin.php:114
+msgid "MySQL filmotech hostname"
+msgstr "Serveur MySQL pour Filmotech"
+
+#: admin/class-filmotech-admin.php:117
+msgid "MySQL hostname"
+msgstr "Serveur MySQL"
+
+#: admin/class-filmotech-admin.php:121
+msgid "MySQL filmotech username"
+msgstr "Identifiant pour la base MySQL Filmotech"
+
+#: admin/class-filmotech-admin.php:124
+msgid "MySQL username"
+msgstr "Identifiant MySQL"
+
+#: admin/class-filmotech-admin.php:128
+msgid "MySQL filmotech user password"
+msgstr "Mot de passe pour la base MySQL Filmotech"
+
+#: admin/class-filmotech-admin.php:131
+msgid "MySQL password"
+msgstr "Mot de passe MySQL"
+
+#: admin/class-filmotech-admin.php:135
+msgid "Number of items per page on list of movies"
+msgstr "Nombre d’éléments par page sur la liste des films"
+
+#: admin/class-filmotech-admin.php:139
+msgid "Items per page"
+msgstr "Éléments par page"
+
+#: admin/class-filmotech-admin.php:143
+msgid "List of movies should display a table view or grid view"
+msgstr "Mode d’affichage de la liste des films : liste ou grille"
+
+#: admin/class-filmotech-admin.php:147
+msgid "Display style"
+msgstr "Mode d’affichage"
+
+#: admin/class-filmotech-admin.php:157 admin/class-filmotech-admin.php:203
+msgid "Filmotech"
+msgstr "Filmotech"
+
+#: admin/class-filmotech-admin.php:169
+#, php-format
+msgid "Database is %s<br/>Database location&nbsp;: %s"
+msgstr "Base de données : %s<br/>Emplacement&nbsp;: %s"
+
+#: admin/class-filmotech-admin.php:202
+msgid "Filmotech plugin settings"
+msgstr "Paramètres de l’extension Filmotech"
+
+#: admin/class-filmotech-admin.php:221
+msgid "SQLite"
+msgstr "SQLite"
+
+#: admin/class-filmotech-admin.php:222
+msgid "MySQL"
+msgstr "MySQL"
+
+#: admin/class-filmotech-admin.php:243
+msgid "List view"
+msgstr "Mode liste"
+
+#: admin/class-filmotech-admin.php:244
+msgid "Grid view"
+msgstr "Mode grille"
+
+#: admin/class-filmotech-admin.php:277
+msgid "Filmotech settings"
+msgstr "Réglages Filmotech"
+
+#: public/class-filmotech-public.php:143 public/class-filmotech-public.php:145
+msgid "Filmotech database error: "
+msgstr "Erreur base de données Filmotech :"
+
+#: public/class-filmotech-public.php:144
+msgid "Database DSN: "
+msgstr "DSN de la base de données :"
+
+#: public/class-filmotech-public.php:193
+msgid "French title"
+msgstr "Titre VF"
+
+#: public/class-filmotech-public.php:194
+msgid "Year"
+msgstr "Année"
+
+#: public/class-filmotech-public.php:195
+msgid "Edition"
+msgstr "Édition"
+
+#: public/class-filmotech-public.php:196
+msgid "Categories"
+msgstr "Genres"
+
+#: public/class-filmotech-public.php:217
+#, php-format
+msgid "There are %d movies in the database."
+msgstr "Il y a %d films dans la base de données."
+
+#: public/class-filmotech-public.php:227
+msgid "← Previous"
+msgstr "← Précédent"
+
+#: public/class-filmotech-public.php:233
+msgid "Next →"
+msgstr "Suivant →"
+
+#: public/class-filmotech-public.php:291
+msgid "Filmotech movie list"
+msgstr "Liste des films Filmotech"
+
+#: public/partials/filmotech-movie-display.php:46
+msgid "Realisator"
+msgstr "Réalisateur"
+
+#: public/partials/filmotech-movie-display.php:50
+msgid "Actors"
+msgstr "Acteurs"
+
+#: public/partials/filmotech-movie-display.php:54
+msgid "Bonus"
+msgstr "Bonus"
+
+#: public/partials/filmotech-movie-display.php:58
+msgid "Reference"
+msgstr "Référence"
+
+#: public/partials/filmotech-movie-display.php:62
+msgid "Support"
+msgstr "Support"
+
+#: public/partials/filmotech-movie-display.php:73
+msgid "Language"
+msgstr "Langue"
+
+#: public/partials/filmotech-movie-display.php:77
+msgid "Subtitles"
+msgstr "Sous-titrage"
+
+#: public/partials/filmotech-movie-display.php:81
+msgid "Audio"
+msgstr "Audio"
+
+#: public/partials/filmotech-movie-display.php:85
+msgid "Added to filmotech: "
+msgstr "Ajouté à Filmotech :"

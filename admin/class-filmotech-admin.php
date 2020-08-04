@@ -76,58 +76,75 @@ class Filmotech_Admin {
 							'type' => 'string',
 							'description' => __('Base location of filmotech export files', 'filmotech'),
 							'sanitize_callback' => null,
-							'show_in_rest' => false
+							'show_in_rest' => false,
+							'name' => __('Base folder','filmotech')
 						),
 						'filmotech_cover_folder_name' => array(
 							'type' => 'string',
 							'description' => __('Covers folder name (relative to base location)', 'filmotech'),
 							'sanitize_callback' => null,
-							'show_in_rest' => false
+							'show_in_rest' => false,
+							'name' => __('Cover folder','filmotech')
 						),
 						'filmotech_database_type' => array(
 							'type' => 'string',
 							'description' => __('SQlite or MySql database', 'filmotech'),
 							'sanitize_callback' => null,
 							'show_in_rest' => false,
-							'default' => 'sqlite'
+							'default' => 'sqlite',
+							'name' => __('Database type','filmotech')
 						),
 						'filmotech_database_name' => array(
 							'type' => 'string',
 							'description' => __('Name of database as registered in filmotech publish options', 'filmotech'),
 							'sanitize_callback' => null,
 							'show_in_rest' => false,
+							'name' => __('Database name','filmotech')
 						),
 						'filmotech_movies_table_name' => array(
 							'type' => 'string',
 							'description' => __('Movies table name', 'filmotech'),
 							'sanitize_callback' => null,
 							'show_in_rest' => false,
-							'default' => 'fmt_movies'
+							'default' => 'fmt_movies',
+							'name' => __('Movie table','filmotech')
 						),
 						'filmotech_mysql_hostname' => array(
 							'type' => 'string',
-							'description' => __('MySQL filmotech hostname (unsupported)', 'filmotech'),
+							'description' => __('MySQL filmotech hostname', 'filmotech'),
 							'sanitize_callback' => null,
-							'show_in_rest' => false
+							'show_in_rest' => false,
+							'name' => __('MySQL hostname','filmotech')
 						),
 						'filmotech_mysql_username' => array(
 							'type' => 'string',
-							'description' => __('MySQL filmotech username (unsupported)', 'filmotech'),
+							'description' => __('MySQL filmotech username', 'filmotech'),
 							'sanitize_callback' => null,
-							'show_in_rest' => false
+							'show_in_rest' => false,
+							'name' => __('MySQL username','filmotech')
 						),
 						'filmotech_mysql_password' => array(
 							'type' => 'string',
-							'description' => __('MySQL filmotech user password (unsupported)', 'filmotech'),
+							'description' => __('MySQL filmotech user password', 'filmotech'),
 							'sanitize_callback' => null,
-							'show_in_rest' => false
+							'show_in_rest' => false,
+							'name' => __('MySQL password','filmotech')
 						),
 						'filmotech_movies_per_page' => array(
 							'type' => 'string',
 							'description' => __('Number of items per page on list of movies', 'filmotech'),
 							'sanitize_callback' => null,
 							'default' => '20',
-							'show_in_rest' => false
+							'show_in_rest' => false,
+							'name' => __('Items per page','filmotech')
+						),
+						'filmotech_display_style' => array(
+							'type' => 'string',
+							'description' => __('List of movies should display a table view or grid view', 'filmotech'),
+							'sanitize_callback' => null,
+							'default' => 'list',
+							'show_in_rest' => false,
+							'name' => __('Display style','filmotech')
 						)
 				);
 			return $settings;
@@ -220,6 +237,13 @@ class Filmotech_Admin {
 				<option <?php if ($value === '100') { echo "selected"; } ?> value="100">100</option>
 			</select>
 			<?php
+		} elseif ($name == 'filmotech_display_style') {
+			?>
+			<select id="filmotech_display_style" name="filmotech_display_style">
+				<option <?php if ($value === 'list')  { echo "selected"; } ?> value="list"><?php _e('List view','filmotech'); ?></option>
+				<option <?php if ($value === 'grid')  { echo "selected"; } ?> value="grid"><?php _e('Grid view','filmotech'); ?></option>
+			</select>
+			<?php
 		} else {
 		?>
 			<input type="text" id="<?php echo esc_attr($name) ?>" name="<?php echo esc_attr($name) ?>" value="<?php echo esc_attr($value) ?>" /><br/>
@@ -255,7 +279,7 @@ class Filmotech_Admin {
 		foreach ($customSettings as $setting => $params) {
 			add_settings_field(
 				$setting,
-				__("$setting&nbsp;:", 'filmotech'),
+				__($params['name'], 'filmotech'),
 				array($this, 'setting_input'),
 				'filmotech-options',
 				'filmotech_settings',
