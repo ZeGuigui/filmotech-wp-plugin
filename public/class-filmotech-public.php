@@ -56,6 +56,11 @@ class Filmotech_Public {
 
 		$loader->add_filter('query_vars', $this, 'register_filmotech_vars');
 		$loader->add_action('parse_request', $this, 'parse_filmotech_requests');
+		$loader->add_action('wp_enqueue_scripts', $this, 'enqueue_scripts');
+	}
+
+	public function enqueue_scripts() {
+		wp_enqueue_style('filmotech_css', plugin_dir_url(__FILE__) . '/css/filmotech-public.css' );
 	}
 
 	public function getDbConnection() {

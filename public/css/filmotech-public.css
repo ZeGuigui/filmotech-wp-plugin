@@ -2,3 +2,61 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+#filmotech div.movieEssentials {
+  overflow: hidden;
+  margin: 0 0 1em 0;
+}
+
+ #filmotech div.cover {
+   float: left;
+   width: 200px;
+   text-align: center;
+   font-size: 1.1em;
+   font-weight: bold;
+ }
+
+#filmotech div.cover img {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+}
+
+ #filmotech div.info {
+   margin: 0 0 0 210px;
+ }
+
+ #filmotech h2.entry-title {
+   font-size: 28px;
+   color: #888;
+ }
+
+#filmotech div.info p.categories {
+  color: #289dcc;
+}
+
+#filmotech-notation {
+  display: block;
+  width: 80px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-position: left;
+  margin: .5em 0 1em 0;
+}
+
+#filmotech-notation.stars0  {  background-image: url('../img/note0.png');  }
+#filmotech-notation.stars1  {  background-image: url('../img/note1.png');  }
+#filmotech-notation.stars2  {  background-image: url('../img/note2.png');  }
+#filmotech-notation.stars3  {  background-image: url('../img/note3.png');  }
+#filmotech-notation.stars4  {  background-image: url('../img/note4.png');  }
+#filmotech-notation.stars5  {  background-image: url('../img/note5.png');  }
+#filmotech-notation.stars6  {  background-image: url('../img/note6.png');  }
+#filmotech-notation.stars7  {  background-image: url('../img/note7.png');  }
+#filmotech-notation.stars8  {  background-image: url('../img/note8.png');  }
+#filmotech-notation.stars9  {  background-image: url('../img/note9.png');  }
+#filmotech-notation.stars10 {  background-image: url('../img/note10.png'); }
+
+#filmotech p.entryDate {
+  font-size: small;
+  color: #888;
+}
