@@ -43,6 +43,63 @@ class Filmotech_Public {
 	private $version;
 
 	/**
+	 * Plugin configuration
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 * @var    string
+	 */
+	 private $BASE_FOLDER ; // = get_option('filmotech_base_folder');
+	 /**
+ 	 * Plugin configuration
+ 	 *
+ 	 * @since  1.0.0
+ 	 * @access private
+ 	 * @var    string
+ 	 */
+	 private $DB_TYPE     ; // = get_option('filmotech_database_type');
+	 /**
+ 	 * Plugin configuration
+ 	 *
+ 	 * @since  1.0.0
+ 	 * @access private
+ 	 * @var    string
+ 	 */
+	 private $DB_SERVER   ; // = get_option('filmotech_mysql_hostname');
+	 /**
+ 	 * Plugin configuration
+ 	 *
+ 	 * @since  1.0.0
+ 	 * @access private
+ 	 * @var    string
+ 	 */
+	 private $DB_USER     ; // = get_option('filmotech_mysql_username');
+	 /**
+ 	 * Plugin configuration
+ 	 *
+ 	 * @since  1.0.0
+ 	 * @access private
+ 	 * @var    string
+ 	 */
+	 private $DB_PASSWORD ; // = get_option('filmotech_mysql_password');
+	 /**
+ 	 * Plugin configuration
+ 	 *
+ 	 * @since  1.0.0
+ 	 * @access private
+ 	 * @var    string
+ 	 */
+	 private $DB_NAME     ; // = get_option('filmotech_database_name');
+	 /**
+ 	 * Plugin configuration
+ 	 *
+ 	 * @since  1.0.0
+ 	 * @access private
+ 	 * @var    string
+ 	 */
+	 private $DB_TABLE    ; // = get_option('filmotech_movies_table_name');
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -54,6 +111,14 @@ class Filmotech_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		$this->BASE_FOLDER = get_option('filmotech_base_folder', plugin_dir_path(__FILE__));
+ 	  $this->DB_TYPE     = get_option('filmotech_database_type', 'sqlite');
+ 	  $this->DB_SERVER   = get_option('filmotech_mysql_hostname');
+ 	  $this->DB_USER     = get_option('filmotech_mysql_username');
+ 	  $this->DB_PASSWORD = get_option('filmotech_mysql_password');
+ 	  $this->DB_NAME     = get_option('filmotech_database_name', 'filmotech');
+ 	  $this->DB_TABLE    = get_option('filmotech_movies_table_name', 'fmt_movies');
+
 		$loader->add_filter('query_vars', $this, 'register_filmotech_vars');
 		$loader->add_action('parse_request', $this, 'parse_filmotech_requests');
 		$loader->add_action('wp_enqueue_scripts', $this, 'enqueue_scripts');
@@ -64,23 +129,19 @@ class Filmotech_Public {
 	}
 
 	public function getDbConnection() {
-		$BASE_FOLDER = get_option('filmotech_base_folder');
-		$DB_TYPE     = get_option('filmotech_database_type');
-		$DB_SERVER   = get_option('filmotech_mysql_hostname');
-    $DB_USER     = get_option('filmotech_mysql_username');
-    $DB_PASSWORD = get_option('filmotech_mysql_password');
-    $DB_NAME     = get_option('filmotech_database_name');
-    $DB_TABLE    = get_option('filmotech_movies_table_name');
 
 		try {
-			if ($DB_TYPE === 'sqlite') {
-				$db = new PDO('sqlite:'. $BASE_FOLDER . '/' . $DB_NAME .'.sqlite3');
+			if ($this->DB_TYPE === 'sqlite') {
+				$dsn = 'sqlite:'. $this->BASE_FOLDER . '/' . $this->DB_NAME .'.sqlite3';
+				$db = new PDO($dsn);
 			} else {
-				$db = new PDO('mysql:host=' . $DB_SERVER . ';dbname=' . $DB_NAME, $DB_USER, $DB_PASSWORD);
+				$dsn = 'mysql:host=' . $this->DB_SERVER . ';dbname=' . $this->DB_NAME;
+				$db = new PDO($dsn, $this->DB_USER, $this->DB_PASSWORD);
 				$db->query("SET NAMES UTF8");
 			}
 		} catch (Exception $e) {
 			error_log(__('Filmotech database error: ','filmotech') . $e->getMessage());
+			error_log(__('Database DSN: ','filmotech') . $dsn);
 			die(__('Filmotech database error: ','filmotech') . $e->getMessage());
 		}
 
@@ -109,27 +170,19 @@ class Filmotech_Public {
 	 * Generate movie list HTML content
 	 */
 	public function getMovieList($page) {
-		$DB_TABLE    = get_option('filmotech_movies_table_name'); // 'fmt_movies';
-		if (empty($DB_TABLE)) {
-			$DB_TABLE = 'fmt_movies';
-		}
 
 		$db = $this->getDbConnection();
 
-		$query = "SELECT count(*) from " . $DB_TABLE;
+		$query = "SELECT count(*) from " . $this->DB_TABLE;
 		$result = $db->query($query);
 		$result_fetch = $result->fetch();
 		$total_record = $result_fetch[0];
 		$result->closeCursor();
 
-		$recordsPerPage = get_option('filmotech_movies_per_page');
-		if (empty($recordsPerPage) || $recordsPerPage == 0) {
-			$recordsPerPage = 20;
-		}
-
+		$recordsPerPage = get_option('filmotech_movies_per_page', 20);
 		$offset = $offset = ($page-1) * $recordsPerPage;
 
-		$query = "SELECT ID, TitreVF, Genre, Annee, Edition FROM $DB_TABLE order by TitreVF LIMIT $recordsPerPage OFFSET $offset ";
+		$query = "SELECT ID, TitreVF, Genre, Annee, Edition FROM $this->DB_TABLE order by TitreVF LIMIT $recordsPerPage OFFSET $offset ";
 		$result = $db->query($query);
 		$movies = $result->fetchAll(PDO::FETCH_BOTH);
 		$result->closeCursor();
@@ -188,10 +241,9 @@ class Filmotech_Public {
 	}
 
 	public function getMovie($id) {
-		$DB_TABLE    = get_option('filmotech_movies_table_name'); // 'fmt_movies';
 		$db = $this->getDbConnection();
 
-		$query = "SELECT * from " . $DB_TABLE . " WHERE ID = :id";
+		$query = "SELECT * from " . $this->DB_TABLE . " WHERE ID = :id";
 		$statement = $db->prepare($query);
 		$statement->execute(array(':id' => $id));
 		$movie = $statement->fetch(PDO::FETCH_OBJ);
