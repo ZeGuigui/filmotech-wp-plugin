@@ -54,7 +54,20 @@ class Filmotech_Admin {
 			$loader->add_action( 'admin_init', $this, 'init_settings');
 			$loader->add_action( 'admin_menu', $this, 'admin_menu');
 			$loader->add_action( 'wp_dashboard_setup', $this, 'setup_dashboard_widget');
+			$plugin = plugin_basename(realpath(__DIR__ . '/../filmotech.php'));
+			$loader->add_filter( "plugin_action_links_$plugin", $this, 'settings_link');
 		}
+	}
+
+	/**
+	 * Add links in the plugins list
+	 * @since 1.0.0
+	 * @param array $links existing links
+	 */
+	public function settings_link($links) {
+		$settings_link = '<a href="options-general.php?page=filmotech-options">' . __('Settings','filmotech') . '</a>';
+	  array_unshift($links, $settings_link);
+		return $links;
 	}
 
 	/**

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Filmotech wordpress plugin\n"
-"POT-Creation-Date: 2020-08-04 23:39+0200\n"
-"PO-Revision-Date: 2020-08-04 23:44+0200\n"
+"POT-Creation-Date: 2020-08-05 23:34+0200\n"
+"PO-Revision-Date: 2020-08-05 23:35+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -15,118 +15,122 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/class-filmotech-admin.php:77
+#: admin/class-filmotech-admin.php:68
+msgid "Settings"
+msgstr "Réglages"
+
+#: admin/class-filmotech-admin.php:90
 msgid "Base location of filmotech export files"
 msgstr "Emplacement de base des fichiers Filmotech"
 
-#: admin/class-filmotech-admin.php:80
+#: admin/class-filmotech-admin.php:93
 msgid "Base folder"
 msgstr "Dossier de base"
 
-#: admin/class-filmotech-admin.php:84
+#: admin/class-filmotech-admin.php:97
 msgid "Covers folder name (relative to base location)"
 msgstr "Nom du dossier des affiches (relatif à l’emplacement de base)"
 
-#: admin/class-filmotech-admin.php:87
+#: admin/class-filmotech-admin.php:100
 msgid "Cover folder"
 msgstr "Dossier des affiches"
 
-#: admin/class-filmotech-admin.php:91
+#: admin/class-filmotech-admin.php:104
 msgid "SQlite or MySql database"
 msgstr "Base de données SQLite ou MySQL"
 
-#: admin/class-filmotech-admin.php:95
+#: admin/class-filmotech-admin.php:108
 msgid "Database type"
 msgstr "Type de base de données"
 
-#: admin/class-filmotech-admin.php:99
+#: admin/class-filmotech-admin.php:112
 msgid "Name of database as registered in filmotech publish options"
 msgstr ""
 "Nom de la base de données telle que configurée dans les options de "
 "publication de Filmotech"
 
-#: admin/class-filmotech-admin.php:102
+#: admin/class-filmotech-admin.php:115
 msgid "Database name"
 msgstr "Nom de la base de données"
 
-#: admin/class-filmotech-admin.php:106
+#: admin/class-filmotech-admin.php:119
 msgid "Movies table name"
 msgstr "Nom de table contenant les films"
 
-#: admin/class-filmotech-admin.php:110
+#: admin/class-filmotech-admin.php:123
 msgid "Movie table"
 msgstr "Table contenant les films"
 
-#: admin/class-filmotech-admin.php:114
+#: admin/class-filmotech-admin.php:127
 msgid "MySQL filmotech hostname"
 msgstr "Serveur MySQL pour Filmotech"
 
-#: admin/class-filmotech-admin.php:117
+#: admin/class-filmotech-admin.php:130
 msgid "MySQL hostname"
 msgstr "Serveur MySQL"
 
-#: admin/class-filmotech-admin.php:121
+#: admin/class-filmotech-admin.php:134
 msgid "MySQL filmotech username"
 msgstr "Identifiant pour la base MySQL Filmotech"
 
-#: admin/class-filmotech-admin.php:124
+#: admin/class-filmotech-admin.php:137
 msgid "MySQL username"
 msgstr "Identifiant MySQL"
 
-#: admin/class-filmotech-admin.php:128
+#: admin/class-filmotech-admin.php:141
 msgid "MySQL filmotech user password"
 msgstr "Mot de passe pour la base MySQL Filmotech"
 
-#: admin/class-filmotech-admin.php:131
+#: admin/class-filmotech-admin.php:144
 msgid "MySQL password"
 msgstr "Mot de passe MySQL"
 
-#: admin/class-filmotech-admin.php:135
+#: admin/class-filmotech-admin.php:148
 msgid "Number of items per page on list of movies"
 msgstr "Nombre d’éléments par page sur la liste des films"
 
-#: admin/class-filmotech-admin.php:139
+#: admin/class-filmotech-admin.php:152
 msgid "Items per page"
 msgstr "Éléments par page"
 
-#: admin/class-filmotech-admin.php:143
+#: admin/class-filmotech-admin.php:156
 msgid "List of movies should display a table view or grid view"
 msgstr "Mode d’affichage de la liste des films : liste ou grille"
 
-#: admin/class-filmotech-admin.php:147
+#: admin/class-filmotech-admin.php:160
 msgid "Display style"
 msgstr "Mode d’affichage"
 
-#: admin/class-filmotech-admin.php:157 admin/class-filmotech-admin.php:203
+#: admin/class-filmotech-admin.php:170 admin/class-filmotech-admin.php:216
 msgid "Filmotech"
 msgstr "Filmotech"
 
-#: admin/class-filmotech-admin.php:169
+#: admin/class-filmotech-admin.php:182
 #, php-format
 msgid "Database is %s<br/>Database location&nbsp;: %s"
 msgstr "Base de données : %s<br/>Emplacement&nbsp;: %s"
 
-#: admin/class-filmotech-admin.php:202
+#: admin/class-filmotech-admin.php:215
 msgid "Filmotech plugin settings"
 msgstr "Paramètres de l’extension Filmotech"
 
-#: admin/class-filmotech-admin.php:221
+#: admin/class-filmotech-admin.php:234
 msgid "SQLite"
 msgstr "SQLite"
 
-#: admin/class-filmotech-admin.php:222
+#: admin/class-filmotech-admin.php:235
 msgid "MySQL"
 msgstr "MySQL"
 
-#: admin/class-filmotech-admin.php:243
+#: admin/class-filmotech-admin.php:256
 msgid "List view"
 msgstr "Mode liste"
 
-#: admin/class-filmotech-admin.php:244
+#: admin/class-filmotech-admin.php:257
 msgid "Grid view"
 msgstr "Mode grille"
 
-#: admin/class-filmotech-admin.php:277
+#: admin/class-filmotech-admin.php:290
 msgid "Filmotech settings"
 msgstr "Réglages Filmotech"
 
