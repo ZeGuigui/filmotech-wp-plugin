@@ -94,6 +94,11 @@ class Filmotech_Admin {
 							'type' => 'string',
 							'description' => __('Base location of filmotech export files', 'filmotech'),
 							'sanitize_callback' => function($folder) {
+									// Set absolute path
+									if (substr($folder, 0, 1) !== '/') {
+											$folder = realpath(ABSPATH . $folder);
+									}
+
 									// Check if folder exists
 									if (!is_readable($folder)) {
 										add_settings_error('filmotech_base_folder','filmotech-invalid-base-folder',__('Invalid base folder or folder not readable','filmotech'), 'error');
