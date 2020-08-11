@@ -93,21 +93,42 @@ class Filmotech_Admin {
 						'filmotech_base_folder' => array(
 							'type' => 'string',
 							'description' => __('Base location of filmotech export files', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => function($folder) {
+									// Check if folder exists
+									if (!is_readable($folder)) {
+										add_settings_error('filmotech_base_folder','filmotech-invalid-base-folder',__('Invalid base folder or folder not readable','filmotech'), 'error');
+									}
+									return $folder;
+								},
 							'show_in_rest' => false,
 							'name' => __('Base folder','filmotech')
 						),
 						'filmotech_cover_folder_name' => array(
 							'type' => 'string',
 							'description' => __('Covers folder name (relative to base location)', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => 'sanitize_text_field',
 							'show_in_rest' => false,
 							'name' => __('Cover folder','filmotech')
 						),
 						'filmotech_database_type' => array(
 							'type' => 'string',
 							'description' => __('SQlite or MySql database', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => function($dbtype) {
+									$validOptions = array('sqlite','mysql');
+									if (!in_array($dbtype, $validOptions)) {
+										add_settings_error('filmotech_database_type', 'filmotech-invalid-dbtype', __('Invalid database type','filmotech'), 'error');
+									}
+									// Check if pdo-sqlite is installed!
+									if ($dbtype == 'sqlite') {
+										if (!class_exists('PDO')) {
+											add_settings_error('filmotech_database_type', 'filmotech-pdo', __('PDO is needed by filmotech plugin. Please check your PHP installation.','filmotech'), 'warning');
+										}
+										if (!extension_loaded('pdo_sqlite')) {
+											add_settings_error('filmotech_database_type', 'filmotech-pdo-sqlite', __('pdo_sqlite is needed by filmotech plugin. Please check your PHP installation.','filmotech'), 'warning');
+										}
+									}
+									return $dbtype;
+								},
 							'show_in_rest' => false,
 							'default' => 'sqlite',
 							'name' => __('Database type','filmotech')
@@ -115,14 +136,14 @@ class Filmotech_Admin {
 						'filmotech_database_name' => array(
 							'type' => 'string',
 							'description' => __('Name of database as registered in filmotech publish options', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => 'sanitize_text_field',
 							'show_in_rest' => false,
 							'name' => __('Database name','filmotech')
 						),
 						'filmotech_movies_table_name' => array(
 							'type' => 'string',
 							'description' => __('Movies table name', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => 'sanitize_text_field',
 							'show_in_rest' => false,
 							'default' => 'fmt_movies',
 							'name' => __('Movie table','filmotech')
@@ -130,28 +151,31 @@ class Filmotech_Admin {
 						'filmotech_mysql_hostname' => array(
 							'type' => 'string',
 							'description' => __('MySQL filmotech hostname', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => 'sanitize_text_field',
 							'show_in_rest' => false,
 							'name' => __('MySQL hostname','filmotech')
 						),
 						'filmotech_mysql_username' => array(
 							'type' => 'string',
 							'description' => __('MySQL filmotech username', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => 'sanitize_text_field',
 							'show_in_rest' => false,
 							'name' => __('MySQL username','filmotech')
 						),
 						'filmotech_mysql_password' => array(
 							'type' => 'string',
 							'description' => __('MySQL filmotech user password', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => 'sanitize_text_field',
 							'show_in_rest' => false,
 							'name' => __('MySQL password','filmotech')
 						),
 						'filmotech_movies_per_page' => array(
 							'type' => 'string',
 							'description' => __('Number of items per page on list of movies', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => function ($setting) {
+									error_log("sanitize_callback for filmotech_movies_per_page");
+									return absint($setting);
+								},
 							'default' => '20',
 							'show_in_rest' => false,
 							'name' => __('Items per page','filmotech')
@@ -159,7 +183,7 @@ class Filmotech_Admin {
 						'filmotech_display_style' => array(
 							'type' => 'string',
 							'description' => __('List of movies should display a table view or grid view', 'filmotech'),
-							'sanitize_callback' => null,
+							'sanitize_callback' => 'sanitize_text_field',
 							'default' => 'list',
 							'show_in_rest' => false,
 							'name' => __('Display style','filmotech')

@@ -82,7 +82,7 @@
           <td><?php echo esc_html($movie->Audio) ?></td>
         </tr>
       </table>
-      <p class="entryDate"><?php echo __('Added to filmotech: ','filmotech'); ?><?php echo esc_html($movie->EntreeDate); ?></p>
+      <p class="entryDate"><?php echo esc_html(sprintf(__('Added to filmotech: %s','filmotech'), $movie->EntreeDate)); ?></p>
     </div>
     <div class="support">
     </div>

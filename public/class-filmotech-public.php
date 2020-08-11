@@ -142,9 +142,9 @@ class Filmotech_Public {
 				$db->query("SET NAMES UTF8");
 			}
 		} catch (Exception $e) {
-			error_log(__('Filmotech database error: ','filmotech') . $e->getMessage());
-			error_log(__('Database DSN: ','filmotech') . $dsn);
-			die(__('Filmotech database error: ','filmotech') . $e->getMessage());
+			$error_msg = sprintf(__('Filmotech database error: %s','filmotech'), $e->getMessage());
+			error_log($error_msg);
+			die($error_msg);
 		}
 
 		return $db;

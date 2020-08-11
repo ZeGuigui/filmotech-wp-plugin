@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Filmotech wordpress plugin\n"
-"POT-Creation-Date: 2020-08-11 10:23+0200\n"
-"PO-Revision-Date: 2020-08-11 10:23+0200\n"
+"POT-Creation-Date: 2020-08-11 14:07+0200\n"
+"PO-Revision-Date: 2020-08-11 14:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -23,109 +23,130 @@ msgstr "Réglages"
 msgid "Base location of filmotech export files"
 msgstr "Emplacement de base des fichiers Filmotech"
 
-#: admin/class-filmotech-admin.php:98
+#: admin/class-filmotech-admin.php:99
+msgid "Invalid base folder or folder not readable"
+msgstr "Emplacement de base invalide ou dossier non accessible"
+
+#: admin/class-filmotech-admin.php:104
 msgid "Base folder"
 msgstr "Dossier de base"
 
-#: admin/class-filmotech-admin.php:102
+#: admin/class-filmotech-admin.php:108
 msgid "Covers folder name (relative to base location)"
 msgstr "Nom du dossier des affiches (relatif à l’emplacement de base)"
 
-#: admin/class-filmotech-admin.php:105
+#: admin/class-filmotech-admin.php:111
 msgid "Cover folder"
 msgstr "Dossier des affiches"
 
-#: admin/class-filmotech-admin.php:109
+#: admin/class-filmotech-admin.php:115
 msgid "SQlite or MySql database"
 msgstr "Base de données SQLite ou MySQL"
 
-#: admin/class-filmotech-admin.php:113
+#: admin/class-filmotech-admin.php:119
+msgid "Invalid database type"
+msgstr "Type de base de données incorrect"
+
+#: admin/class-filmotech-admin.php:124
+msgid "PDO is needed by filmotech plugin. Please check your PHP installation."
+msgstr ""
+"L’extension filmotech nécessite PDO. Merci de vérifier votre installation de "
+"PHP."
+
+#: admin/class-filmotech-admin.php:127
+msgid ""
+"pdo_sqlite is needed by filmotech plugin. Please check your PHP installation."
+msgstr ""
+"pdo_sqlite est nécessaire par l’extension Filmotech. Merci de vérifier votre "
+"installation de PHP."
+
+#: admin/class-filmotech-admin.php:134
 msgid "Database type"
 msgstr "Type de base de données"
 
-#: admin/class-filmotech-admin.php:117
+#: admin/class-filmotech-admin.php:138
 msgid "Name of database as registered in filmotech publish options"
 msgstr ""
 "Nom de la base de données telle que configurée dans les options de "
 "publication de Filmotech"
 
-#: admin/class-filmotech-admin.php:120
+#: admin/class-filmotech-admin.php:141
 msgid "Database name"
 msgstr "Nom de la base de données"
 
-#: admin/class-filmotech-admin.php:124
+#: admin/class-filmotech-admin.php:145
 msgid "Movies table name"
 msgstr "Nom de table contenant les films"
 
-#: admin/class-filmotech-admin.php:128
+#: admin/class-filmotech-admin.php:149
 msgid "Movie table"
 msgstr "Table contenant les films"
 
-#: admin/class-filmotech-admin.php:132
+#: admin/class-filmotech-admin.php:153
 msgid "MySQL filmotech hostname"
 msgstr "Serveur MySQL pour Filmotech"
 
-#: admin/class-filmotech-admin.php:135
+#: admin/class-filmotech-admin.php:156
 msgid "MySQL hostname"
 msgstr "Serveur MySQL"
 
-#: admin/class-filmotech-admin.php:139
+#: admin/class-filmotech-admin.php:160
 msgid "MySQL filmotech username"
 msgstr "Identifiant pour la base MySQL Filmotech"
 
-#: admin/class-filmotech-admin.php:142
+#: admin/class-filmotech-admin.php:163
 msgid "MySQL username"
 msgstr "Identifiant MySQL"
 
-#: admin/class-filmotech-admin.php:146
+#: admin/class-filmotech-admin.php:167
 msgid "MySQL filmotech user password"
 msgstr "Mot de passe pour la base MySQL Filmotech"
 
-#: admin/class-filmotech-admin.php:149
+#: admin/class-filmotech-admin.php:170
 msgid "MySQL password"
 msgstr "Mot de passe MySQL"
 
-#: admin/class-filmotech-admin.php:153
+#: admin/class-filmotech-admin.php:174
 msgid "Number of items per page on list of movies"
 msgstr "Nombre d’éléments par page sur la liste des films"
 
-#: admin/class-filmotech-admin.php:157
+#: admin/class-filmotech-admin.php:181
 msgid "Items per page"
 msgstr "Éléments par page"
 
-#: admin/class-filmotech-admin.php:161
+#: admin/class-filmotech-admin.php:185
 msgid "List of movies should display a table view or grid view"
 msgstr "Mode d’affichage de la liste des films : liste ou grille"
 
-#: admin/class-filmotech-admin.php:165
+#: admin/class-filmotech-admin.php:189
 msgid "Display style"
 msgstr "Mode d’affichage"
 
-#: admin/class-filmotech-admin.php:175 admin/class-filmotech-admin.php:228
+#: admin/class-filmotech-admin.php:199 admin/class-filmotech-admin.php:252
 msgid "Filmotech"
 msgstr "Filmotech"
 
-#: admin/class-filmotech-admin.php:227
+#: admin/class-filmotech-admin.php:251
 msgid "Filmotech plugin settings"
 msgstr "Paramètres de l’extension Filmotech"
 
-#: admin/class-filmotech-admin.php:246
+#: admin/class-filmotech-admin.php:270
 msgid "SQLite"
 msgstr "SQLite"
 
-#: admin/class-filmotech-admin.php:247
+#: admin/class-filmotech-admin.php:271
 msgid "MySQL"
 msgstr "MySQL"
 
-#: admin/class-filmotech-admin.php:268
+#: admin/class-filmotech-admin.php:292
 msgid "List view"
 msgstr "Mode liste"
 
-#: admin/class-filmotech-admin.php:269
+#: admin/class-filmotech-admin.php:293
 msgid "Grid view"
 msgstr "Mode grille"
 
-#: admin/class-filmotech-admin.php:302
+#: admin/class-filmotech-admin.php:326
 msgid "Filmotech settings"
 msgstr "Réglages Filmotech"
 
@@ -149,13 +170,10 @@ msgstr "Ajout du dernier film le : %s"
 msgid "View filmotech database"
 msgstr "Voir la base filmotech"
 
-#: public/class-filmotech-public.php:145 public/class-filmotech-public.php:147
-msgid "Filmotech database error: "
-msgstr "Erreur base de données Filmotech :"
-
-#: public/class-filmotech-public.php:146
-msgid "Database DSN: "
-msgstr "DSN de la base de données :"
+#: public/class-filmotech-public.php:145
+#, php-format
+msgid "Filmotech database error: %s"
+msgstr "Erreur base de données Filmotech : %s"
 
 #: public/class-filmotech-public.php:214
 msgid "French title"
@@ -223,8 +241,12 @@ msgid "Audio"
 msgstr "Audio"
 
 #: public/partials/filmotech-movie-display.php:85
-msgid "Added to filmotech: "
-msgstr "Ajouté à Filmotech :"
+#, php-format
+msgid "Added to filmotech: %s"
+msgstr "Ajouté à Filmotech : %s"
+
+#~ msgid "Database DSN: "
+#~ msgstr "DSN de la base de données :"
 
 #, php-format
 #~ msgid "Database is %s<br/>Database location&nbsp;: %s"
