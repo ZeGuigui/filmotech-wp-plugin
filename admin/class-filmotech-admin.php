@@ -56,7 +56,12 @@ class Filmotech_Admin {
 			$loader->add_action( 'wp_dashboard_setup', $this, 'setup_dashboard_widget');
 			$plugin = plugin_basename(realpath(__DIR__ . '/../filmotech.php'));
 			$loader->add_filter( "plugin_action_links_$plugin", $this, 'settings_link');
+			$loader->add_action('admin_enqueue_scripts', $this, 'enqueue_scripts');
 		}
+	}
+
+	public function enqueue_scripts() {
+		wp_enqueue_style('filmotech_admin_css', plugin_dir_url(__FILE__) . '/css/filmotech-admin.css' );
 	}
 
 	/**
@@ -175,11 +180,18 @@ class Filmotech_Admin {
 	 */
 	public function dashboard_widget($post, $callback_args) {
 		$databaseType = get_option('filmotech_database_type');
+		$public = new Filmotech_Public($this->plugin_name, $this->version);
+		$db = $public->getDbConnection();
+
+		include plugin_dir_path(__FILE__) . 'partials/filmotech-dashboard-panel.php';
+
+		/*
 		if ($databaseType === false) {
 			esc_html_e( 'Filmotech settings not set. See Settings to set your filmotech database.', 'filmotech' );
 			return;
 		}
 		printf( __('Database is %s<br/>Database location&nbsp;: %s','filmotech'), $databaseType, get_option('filmotech_base_folder'));
+		*/
 	}
 
 	/**

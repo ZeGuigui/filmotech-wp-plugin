@@ -2,3 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+ #filmotech_dashboard_widget li a::before, #filmotech_dashboard_widget li > span::before {
+     padding: 0 5px 0 0;
+ }

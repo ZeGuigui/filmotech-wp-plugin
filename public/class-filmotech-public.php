@@ -106,7 +106,7 @@ class Filmotech_Public {
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version, $loader ) {
+	public function __construct( $plugin_name, $version, $loader = null ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
@@ -119,9 +119,11 @@ class Filmotech_Public {
  	  $this->DB_NAME     = get_option('filmotech_database_name', 'filmotech');
  	  $this->DB_TABLE    = get_option('filmotech_movies_table_name', 'fmt_movies');
 
-		$loader->add_filter('query_vars', $this, 'register_filmotech_vars');
-		$loader->add_action('parse_request', $this, 'parse_filmotech_requests');
-		$loader->add_action('wp_enqueue_scripts', $this, 'enqueue_scripts');
+		if ($loader !== null) {
+			$loader->add_filter('query_vars', $this, 'register_filmotech_vars');
+			$loader->add_action('parse_request', $this, 'parse_filmotech_requests');
+			$loader->add_action('wp_enqueue_scripts', $this, 'enqueue_scripts');
+		}
 	}
 
 	public function enqueue_scripts() {
@@ -148,6 +150,17 @@ class Filmotech_Public {
 		return $db;
 	}
 
+	public function getLastAddedMovieTime() {
+		$db = $this->getDbConnection();
+		$query = "SELECT max(EntreeDate) from " . $this->DB_TABLE;
+		$result = $db->query($query);
+		$result_fetch = $result->fetch();
+		$lastMovieTime = $result_fetch[0];
+		$result->closeCursor();
+
+		return $lastMovieTime;
+	}
+
 	/**
 	 * Generate movie URL
 	 * @since 1.0.0
@@ -166,11 +179,7 @@ class Filmotech_Public {
 		return home_url('/') . $link;
 	}
 
-	/**
-	 * Generate movie list HTML content
-	 */
-	public function getMovieList($page) {
-
+	public function getMovieCount() {
 		$db = $this->getDbConnection();
 
 		$query = "SELECT count(*) from " . $this->DB_TABLE;
@@ -178,6 +187,18 @@ class Filmotech_Public {
 		$result_fetch = $result->fetch();
 		$total_record = $result_fetch[0];
 		$result->closeCursor();
+
+		return $total_record;
+	}
+
+	/**
+	 * Generate movie list HTML content
+	 */
+	public function getMovieList($page) {
+
+		$db = $this->getDbConnection();
+
+		$total_record = $this->getMovieCount();
 
 		$recordsPerPage = get_option('filmotech_movies_per_page', 20);
 		$offset = $offset = ($page-1) * $recordsPerPage;
