@@ -170,7 +170,7 @@ class Filmotech_Public {
 		$link = $wp_rewrite->get_page_permastruct();
 
 		if (!empty($link)) {
-			$link = str_replace('%pagename%', 'filmotech/movie/' . $movie['ID'] . '-' . $movie['TitreVF'], $link);
+			$link = str_replace('%pagename%', 'filmotech/movie/' . absint($movie['ID']) . '-' . $movie['TitreVF'], $link);
 			return home_url('/') . $link;
 		}
 
@@ -183,7 +183,7 @@ class Filmotech_Public {
 		$link = $wp_rewrite->get_page_permastruct();
 
 		if (!empty($link)) {
-			$link = str_replace('%pagename%', "filmotech/$page", $link);
+			$link = str_replace('%pagename%', 'filmotech/' . absint($page), $link);
 			return home_url('/') . $link;
 		}
 
