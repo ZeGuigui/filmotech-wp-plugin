@@ -57,9 +57,25 @@ class Filmotech_Admin {
 			$plugin = plugin_basename(realpath(__DIR__ . '/../filmotech.php'));
 			$loader->add_filter( "plugin_action_links_$plugin", $this, 'settings_link');
 			$loader->add_action('admin_enqueue_scripts', $this, 'enqueue_scripts');
+			$loader->add_action('permalink_structure_changed', $this, 'register_permalinks');
 		}
 	}
 
+	/**
+	 * Register permalink structure in case settings are changed in Wordpress
+	 * Not working?
+	 * @since 1.0.0
+	 */
+	public function register_permalinks() {
+		include plugin_dir_path(__FILE__) . '../includes/class-filmotech-activator.php';
+		Filmotech_Activator::setRewriteRules();
+	}
+
+	/**
+	 * Add custom CSS in admin zone
+	 *
+	 * @since 1.0.0
+	 */
 	public function enqueue_scripts() {
 		wp_enqueue_style('filmotech_admin_css', plugin_dir_url(__FILE__) . '/css/filmotech-admin.css' );
 	}

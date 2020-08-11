@@ -22,6 +22,14 @@
  */
 class Filmotech_Activator {
 
+	public static function setRewriteRules() {
+		add_rewrite_rule('^filmotech/?$', 'index.php?filmotech=0&page=1', 'top');
+		add_rewrite_rule('^filmotech/([0-9]+)/?$', 'index.php?filmotech=0&page=$matches[1]', 'top');
+		add_rewrite_rule('^filmotech/movie/([0-9]+)-.*/?$', 'index.php?filmotech=$matches[1]', 'top');
+		add_rewrite_rule('^filmotech/cover/([0-9]+)/?$', 'index.php?filmotech=$matches[1]&cover=1', 'top');
+		flush_rewrite_rules();
+	}
+
 	/**
 	 * Setup plugin
 	 *
@@ -31,11 +39,7 @@ class Filmotech_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		add_rewrite_rule('^filmotech/?$', 'index.php?filmotech=0&page=1', 'top');
-		add_rewrite_rule('^filmotech/([0-9]+)/?$', 'index.php?filmotech=0&page=$matches[1]', 'top');
-		add_rewrite_rule('^filmotech/movie/([0-9]+)-.*/?$', 'index.php?filmotech=$matches[1]', 'top');
-		add_rewrite_rule('^filmotech/cover/([0-9]+)/?$', 'index.php?filmotech=$matches[1]&cover=1', 'top');
-		flush_rewrite_rules();
+		self::setRewriteRules();
 	}
 
 }
