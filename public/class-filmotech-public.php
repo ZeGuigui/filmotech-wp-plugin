@@ -162,22 +162,9 @@ class Filmotech_Public {
 	}
 
 	/**
-	 * Generate movie URL
+	 * Generate page URL for index list
 	 * @since 1.0.0
 	 */
-	public function getMovieUrl($movie) {
-		global $wp_rewrite;
-		$link = $wp_rewrite->get_page_permastruct();
-
-		if (!empty($link)) {
-			$link = str_replace('%pagename%', 'filmotech/movie/' . absint($movie['ID']) . '-' . $movie['TitreVF'], $link);
-			return home_url('/') . $link;
-		}
-
-		// No rewrite
-		return home_url( '?filmotech=' . $movie['ID'] );
-	}
-
 	public function getPageUrl($page) {
 		global $wp_rewrite;
 		$link = $wp_rewrite->get_page_permastruct();
@@ -192,6 +179,10 @@ class Filmotech_Public {
 
 	}
 
+	/**
+	 * Number of movies in the database
+	 * @since 1.0.0
+	 */
 	public function getMovieCount() {
 		$db = $this->getDbConnection();
 
@@ -214,64 +205,43 @@ class Filmotech_Public {
 		$total_record = $this->getMovieCount();
 
 		$recordsPerPage = get_option('filmotech_movies_per_page', 20);
+		$number_of_pages = ceil($total_record / $recordsPerPage);
 		$offset = $offset = ($page-1) * $recordsPerPage;
 
 		$query = "SELECT ID, TitreVF, Genre, Annee, Edition FROM $this->DB_TABLE order by TitreVF LIMIT $recordsPerPage OFFSET $offset ";
 		$result = $db->query($query);
-		$movies = $result->fetchAll(PDO::FETCH_BOTH);
+		$movies = $result->fetchAll(PDO::FETCH_OBJ);
 		$result->closeCursor();
 
-		$html = '<table id="filmotechMovieList">'
-				  . '<thead>'
-					. '<tr>'
-					. '<th scope="col">' . __('French title','filmotech') . '</th>'
-					. '<th scope="col">' . __('Year', 'filmotech') . '</th>'
-					. '<th scope="col">' . __('Edition', 'filmotech') . '</th>'
-					. '<th scope="col">' . __('Categories', 'filmotech') . '</th>'
-					. '</tr>'
-					. '</thead>'
-					. '<tbody>'
-					. PHP_EOL
-					;
 		foreach ($movies as $movie) {
-			$permalink = $this->getMovieUrl($movie);
-			$html .= '<tr>'
-						.  '	<td>'
-						.					'<a href="' . esc_url($permalink) . '" class="movieLink">'
-						. 				esc_html($movie['TitreVF']) . '</a>'
-						. 				'</td>' . PHP_EOL
-						.  '	<td>' . esc_html($movie['Annee'])   . '</td>' . PHP_EOL
-						.  '	<td>' . esc_html($movie['Edition']) . '</td>' . PHP_EOL
-						.  '	<td>' . esc_html($movie['Genre'])   . '</td>' . PHP_EOL
-						.  '</tr>' . PHP_EOL
-						;
+			$this->improveMovieObject($movie);
 		}
 
-		$html .= '</tbody></table>'
-					.  '<p>' . sprintf(__('There are %d movies in the database.','filmotech'), $total_record) . '</p>'
-					;
-
-		$number_of_pages = ceil($total_record / $recordsPerPage);
-
-		// Add page navigation
-		if ($number_of_pages > 1) {
-			$html .= '<ul class="default-wp-page clearfix">';
-			if ($page > 1) {
-				$html .= '<li style="list-style: none;" class="previous">'
-							.  '<a href="' . esc_attr($this->getPageUrl($page - 1)) . '">' . __('← Previous', 'filmotech') . '</a>'
-							.  '</li>'
-							;
-			}
-			if ($page < $number_of_pages) {
-				$html .= '<li style="list-style: none;" class="next">'
-						  .  '<a href="' . esc_attr($this->getPageUrl($page + 1)) . '">' . __('Next →', 'filmotech') . '</a>'
-							.  '</li>'
-							;
-			}
-			$html .= '</ul>';
-		}
+		ob_start();
+		include plugin_dir_path(__FILE__) . 'partials/filmotech-movie-list.php';
+		$html = ob_get_contents();
+		ob_end_clean();
 
 		return $html;
+	}
+
+	public function improveMovieObject($movie) {
+		// Generate cover URL
+		global $wp_rewrite;
+		$link = $wp_rewrite->get_page_permastruct();
+		$id = absint($movie->ID);
+
+		// URLs
+		if (!empty($link)) {
+			$movie->permalink = home_url('/') . str_replace('%pagename%', 'filmotech/movie/' . $id . '-' . $movie->TitreVF, $link);
+			$movie->coverUrl  = home_url('/') . str_replace('%pagename%', 'filmotech/cover/' . $id, $link);
+		} else {
+			$movie->permalink = home_url('?filmotech=' . $id);
+			$movie->coverUrl  = home_url('?filmotech=' . $id . '&cover=1');
+		}
+
+		// Split categories
+		$movie->Categories = preg_split('/,\\s*/', $movie->Genre);
 	}
 
 	public function getMovie($id) {
@@ -283,16 +253,7 @@ class Filmotech_Public {
 		$movie = $statement->fetch(PDO::FETCH_OBJ);
 		$statement->closeCursor();
 
-		// Generate cover URL
-		global $wp_rewrite;
-		$link = $wp_rewrite->get_page_permastruct();
-
-		if (!empty($link)) {
-			$link = str_replace('%pagename%', 'filmotech/cover/' . $id, $link);
-			$movie->coverUrl = home_url('/') . $link;
-		} else {
-			$movie->coverUrl = home_url('?filmotech=' . absint($id) . '&cover=1');
-		}
+		$this->improveMovieObject($movie);
 
 		return $movie;
 	}

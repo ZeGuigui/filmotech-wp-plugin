@@ -28,7 +28,16 @@
         <?php echo esc_html($movie->Edition); ?>
     </div>
     <div class="info">
-      <p class="categories"><?php echo esc_html($movie->Genre); ?></p>
+      <p class="categories">
+        <?php
+          $firstCateg = true;
+          foreach ($movie->Categories as $category) {
+            if (!$firstCateg) { echo ', '; }
+            echo "<span>" . esc_html($category) . "</span>";
+            $firstCateg = false;
+          }
+        ?>
+      </p>
       <?php if ($movie->Duree > 0) { ?>
       <p class="duration"><?php echo esc_html($movie->Duree); ?> min.</p>
       <?php } ?>
