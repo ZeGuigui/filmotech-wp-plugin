@@ -168,15 +168,28 @@ class Filmotech_Public {
 	public function getMovieUrl($movie) {
 		global $wp_rewrite;
 		$link = $wp_rewrite->get_page_permastruct();
-		$link = str_replace('%pagename%', 'filmotech/movie/' . $movie['ID'] . '-' . $movie['TitreVF'], $link);
-		return home_url('/') . $link;
+
+		if (!empty($link)) {
+			$link = str_replace('%pagename%', 'filmotech/movie/' . $movie['ID'] . '-' . $movie['TitreVF'], $link);
+			return home_url('/') . $link;
+		}
+
+		// No rewrite
+		return home_url( '?filmotech=' . $movie['ID'] );
 	}
 
 	public function getPageUrl($page) {
 		global $wp_rewrite;
 		$link = $wp_rewrite->get_page_permastruct();
-		$link = str_replace('%pagename%', "filmotech/$page", $link);
-		return home_url('/') . $link;
+
+		if (!empty($link)) {
+			$link = str_replace('%pagename%', "filmotech/$page", $link);
+			return home_url('/') . $link;
+		}
+
+		// No rewrite
+		return home_url( '?filmotech=0&page=' . absint($page) );
+
 	}
 
 	public function getMovieCount() {
@@ -273,8 +286,13 @@ class Filmotech_Public {
 		// Generate cover URL
 		global $wp_rewrite;
 		$link = $wp_rewrite->get_page_permastruct();
-		$link = str_replace('%pagename%', 'filmotech/cover/' . $id, $link);
-		$movie->coverUrl = home_url('/') . $link;
+
+		if (!empty($link)) {
+			$link = str_replace('%pagename%', 'filmotech/cover/' . $id, $link);
+			$movie->coverUrl = home_url('/') . $link;
+		} else {
+			$movie->coverUrl = home_url('?filmotech=' . absint($id) . '&cover=1');
+		}
 
 		return $movie;
 	}
