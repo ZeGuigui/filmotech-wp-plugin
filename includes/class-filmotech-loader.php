@@ -124,6 +124,13 @@ class Filmotech_Loader {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
+		// Proper ob_end_flush() for all levels
+		// @see https://www.kevinleary.net/wordpress-ob_end_flush-error-fix/
+		remove_action ('shutdown', 'wp_ob_end_flush_all', 1);
+		add_action('shutdown', function() {
+			while (@ob_end_flush());
+		});
+
 	}
 
 }
