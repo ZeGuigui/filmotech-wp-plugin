@@ -175,7 +175,7 @@ class Filmotech_Public {
 		}
 
 		// No rewrite
-		return home_url( '?filmotech=0&page=' . absint($page) );
+		return home_url( '?filmotech=0&fp=' . absint($page) );
 
 	}
 
@@ -199,7 +199,6 @@ class Filmotech_Public {
 	 * Generate movie list HTML content
 	 */
 	public function getMovieList($page) {
-
 		$db = $this->getDbConnection();
 
 		$total_record = $this->getMovieCount();
@@ -287,7 +286,7 @@ class Filmotech_Public {
 			$pageDate = current_time( 'mysql' );
 			$gmtDate  = current_time( 'mysql', 1 );
 		} else {
-			$page     = isset($wp_query->query_vars['page']) ? intval($wp_query->query_vars['page'],10) : 0;
+			$page     = isset($wp_query->query_vars['fp']) ? intval($wp_query->query_vars['fp'],10) : 0;
 			$title    = __('Filmotech movie list', 'filmotech');
 			$content  = $this->getMovieList($page);
 			$pageDate = current_time( 'mysql' );
@@ -421,7 +420,7 @@ EOF;
 	 */
 	public function register_filmotech_vars($vars) {
 		$vars[] = 'filmotech';
-		$vars[] = 'page';
+		$vars[] = 'fp';
 		$vars[] = 'cover';
 		return $vars;
 	}

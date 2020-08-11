@@ -57,18 +57,7 @@ class Filmotech_Admin {
 			$plugin = plugin_basename(realpath(__DIR__ . '/../filmotech.php'));
 			$loader->add_filter( "plugin_action_links_$plugin", $this, 'settings_link');
 			$loader->add_action('admin_enqueue_scripts', $this, 'enqueue_scripts');
-			$loader->add_action('permalink_structure_changed', $this, 'register_permalinks');
 		}
-	}
-
-	/**
-	 * Register permalink structure in case settings are changed in Wordpress
-	 * Not working?
-	 * @since 1.0.0
-	 */
-	public function register_permalinks() {
-		include plugin_dir_path(__FILE__) . '../includes/class-filmotech-activator.php';
-		Filmotech_Activator::setRewriteRules();
 	}
 
 	/**
@@ -229,14 +218,6 @@ class Filmotech_Admin {
 		$db = $public->getDbConnection();
 
 		include plugin_dir_path(__FILE__) . 'partials/filmotech-dashboard-panel.php';
-
-		/*
-		if ($databaseType === false) {
-			esc_html_e( 'Filmotech settings not set. See Settings to set your filmotech database.', 'filmotech' );
-			return;
-		}
-		printf( __('Database is %s<br/>Database location&nbsp;: %s','filmotech'), $databaseType, get_option('filmotech_base_folder'));
-		*/
 	}
 
 	/**

@@ -17,8 +17,6 @@
 <thead>
   <tr>
     <th scope="col"><?php _e('French title','filmotech'); ?></th>
-    <th scope="col"><?php _e('Year', 'filmotech');        ?></th>
-    <th scope="col"><?php _e('Edition', 'filmotech');     ?></th>
     <th scope="col"><?php _e('Categories', 'filmotech');  ?></th>
   </tr>
 </thead>
@@ -27,9 +25,13 @@
  foreach ($movies as $movie) {
  ?>
   <tr>
-    <td><a href="<?php echo esc_url($movie->permalink); ?>" class="movieLink"><?php echo esc_html($movie->TitreVF) ; ?></a></td>
-    <td><?php echo esc_html($movie->Annee)   ; ?></td>
-    <td><?php echo esc_html($movie->Edition) ; ?></td>
+    <td><a href="<?php echo esc_url($movie->permalink); ?>" class="movieLink"><?php
+      echo esc_html($movie->TitreVF) ;
+      if ($movie->Annee > 0) { echo esc_html( sprintf(' (%d)', $movie->Annee) ); }
+      ?></a><?php if (!empty($movie->Edition)) { ?>
+        <span class="edition"> - <?php echo esc_html($movie->Edition) ; ?></span>
+      <?php } ?>
+    </td>
     <td>
       <?php
         $firstCateg = true;
