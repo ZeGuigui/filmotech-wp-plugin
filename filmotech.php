@@ -29,6 +29,9 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'PLUGIN_NAME_VERSION', '1.0.0' );
 
+define ('FILMOTECH_PLUGIN_NAME', __('Filmotech for Wordpress','filmotech'));
+define ('FILMOTECH_PLUGIN_DESC', __('Display your filmotech collection inside your Wordpress website!','filmotech'));
+
 /**
  * The code that runs during plugin activation.
  */

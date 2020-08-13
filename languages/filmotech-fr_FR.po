@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Filmotech wordpress plugin\n"
-"POT-Creation-Date: 2020-08-13 23:19+0200\n"
-"PO-Revision-Date: 2020-08-13 23:21+0200\n"
+"POT-Creation-Date: 2020-08-13 23:35+0200\n"
+"PO-Revision-Date: 2020-08-13 23:35+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -202,6 +202,14 @@ msgstr "Ajout du dernier film le : %s"
 #: admin/partials/filmotech-dashboard-panel.php:31
 msgid "View filmotech database"
 msgstr "Voir la base filmotech"
+
+#: filmotech.php:32
+msgid "Filmotech for Wordpress"
+msgstr "Filmotech pour Wordpress"
+
+#: filmotech.php:33
+msgid "Display your filmotech collection inside your Wordpress website!"
+msgstr "Affichez votre collection Filmotech sur votre site Wordpress !"
 
 #: public/class-filmotech-public.php:145
 #, php-format
