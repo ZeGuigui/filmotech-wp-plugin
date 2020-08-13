@@ -17,6 +17,8 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       filmotech
  * Domain Path:       /languages
+ * Requires at least: 5.4
+ * Requires PHP:      5.6
  */
 
 // If this file is called directly, abort.
