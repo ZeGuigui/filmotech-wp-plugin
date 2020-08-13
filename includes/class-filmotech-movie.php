@@ -73,8 +73,8 @@ class FilmotechMovie {
 			$this->permalink = home_url('/') . str_replace('%pagename%', 'filmotech/movie/' . $id . '-' . $this->getTitle(), $link);
 			$this->coverUrl  = home_url('/') . str_replace('%pagename%', 'filmotech/cover/' . $id, $link);
 		} else {
-			$movie->permalink = home_url('?filmotech=' . $id);
-			$movie->coverUrl  = home_url('?filmotech=' . $id . '&cover=1');
+			$this->permalink = home_url('?filmotech=' . $id);
+			$this->coverUrl  = home_url('?filmotech=' . $id . '&cover=1');
 		}
 
 		// Split categories
