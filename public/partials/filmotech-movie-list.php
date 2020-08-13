@@ -16,7 +16,7 @@
 <table id="filmotechMovieList">
 <thead>
   <tr>
-    <th scope="col"><?php _e('French title','filmotech'); ?></th>
+    <th scope="col"><?php _e('Title','filmotech'); ?></th>
     <th scope="col"><?php _e('Categories', 'filmotech');  ?></th>
   </tr>
 </thead>
@@ -26,7 +26,7 @@
  ?>
   <tr>
     <td><a href="<?php echo esc_url($movie->permalink); ?>" class="movieLink"><?php
-      echo esc_html($movie->TitreVF) ;
+      echo esc_html($movie->getTitle()) ;
       if ($movie->Annee > 0) { echo esc_html( sprintf(' (%d)', $movie->Annee) ); }
       ?></a><?php if (!empty($movie->Edition)) { ?>
         <span class="edition"> - <?php echo esc_html($movie->Edition) ; ?></span>

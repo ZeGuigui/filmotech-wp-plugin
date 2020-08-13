@@ -198,7 +198,7 @@ class Filmotech_Public {
 	/**
 	 * Generate movie list HTML content
 	 */
-	public function getMovieList($page) {
+	public function getMovieList($page, $forcedSortKey = null) {
 		$db = $this->getDbConnection();
 
 		$total_record = $this->getMovieCount();
@@ -207,15 +207,36 @@ class Filmotech_Public {
 		$number_of_pages = ceil($total_record / $recordsPerPage);
 		$offset = $offset = ($page-1) * $recordsPerPage;
 
-		$query = "SELECT ID, TitreVF, Genre, Annee, Edition FROM $this->DB_TABLE order by TitreVF LIMIT $recordsPerPage OFFSET $offset ";
-		$result = $db->query($query);
-		$movies = $result->fetchAll(PDO::FETCH_OBJ);
-		$result->closeCursor();
+		if ($forcedSortKey === null) {
+			$sortKey = get_option('filmotech_display_order','alpha');
+		} else {
+			$sortKey = $forcedSortKey;
+		}
 
+		// When displaying by title, sort by prefered title!
+		$preferedTitle = get_option('filmotech_title_to_display', 'VF');
+
+		if ($sortKey == 'alpha') {
+			// Always add TitreVF as second sort key when sorting by TitreVO
+			$sortColumn =  $preferedTitle == 'VF' ? 'TitreVF asc, TitreVO asc, EntreeDate desc' : 'IFNULL(NULLIF(TitreVO,\'\'),TitreVF) asc, TitreVF asc, EntreeDate desc';
+		} elseif ($sortKey == 'date') {
+			// If same entered date, using a title sorting
+			$sortColumn = $preferedTitle == 'VF' ? 'EntreeDate desc, TitreVF asc, TitreVO asc' : 'EntreeDate desc, IFNULL(NULLIF(TitreVO,\'\'),TitreVF) asc, TitreVF asc';
+		} else {
+			error_log(sprintf(__('Unknown sort key: %s','filmotech'),$sortKey));
+			$sortColumn = 'TitreVF';
+		}
+
+		$query = "SELECT ID, TitreVF, TitreVO, Genre, Annee, Edition FROM $this->DB_TABLE order by $sortColumn LIMIT $recordsPerPage OFFSET $offset ";
+		$result = $db->query($query);
+		$result->setFetchMode(PDO::FETCH_CLASS,'FilmotechMovie');
+		$movies = $result->fetchAll();
+		$result->closeCursor();
+		/*
 		foreach ($movies as $movie) {
 			$this->improveMovieObject($movie);
 		}
-
+		*/
 		ob_start();
 		include plugin_dir_path(__FILE__) . 'partials/filmotech-movie-list.php';
 		$html = ob_get_contents();
@@ -224,39 +245,49 @@ class Filmotech_Public {
 		return $html;
 	}
 
-	public function improveMovieObject($movie) {
-		// Generate cover URL
-		global $wp_rewrite;
-		$link = $wp_rewrite->get_page_permastruct();
-		$id = absint($movie->ID);
+//	public function improveMovieObject($movie) {
+//		// Generate cover URL
+//		global $wp_rewrite;
+//		$link = $wp_rewrite->get_page_permastruct();
+//		$id = absint($movie->ID);
+//
+//		// URLs
+//		if (!empty($link)) {
+//			$movie->permalink = home_url('/') . str_replace('%pagename%', 'filmotech/movie/' . $id . '-' . $movie->TitreVF, $link);
+//			$movie->coverUrl  = home_url('/') . str_replace('%pagename%', 'filmotech/cover/' . $id, $link);
+//		} else {
+//			$movie->permalink = home_url('?filmotech=' . $id);
+//			$movie->coverUrl  = home_url('?filmotech=' . $id . '&cover=1');
+//		}
+//
+//		// Split categories
+//		$movie->Categories = preg_split('/,\\s*/', $movie->Genre);
+//	}
 
-		// URLs
-		if (!empty($link)) {
-			$movie->permalink = home_url('/') . str_replace('%pagename%', 'filmotech/movie/' . $id . '-' . $movie->TitreVF, $link);
-			$movie->coverUrl  = home_url('/') . str_replace('%pagename%', 'filmotech/cover/' . $id, $link);
-		} else {
-			$movie->permalink = home_url('?filmotech=' . $id);
-			$movie->coverUrl  = home_url('?filmotech=' . $id . '&cover=1');
-		}
 
-		// Split categories
-		$movie->Categories = preg_split('/,\\s*/', $movie->Genre);
-	}
-
+	/**
+	* Fetch a movie from database
+	* @since 1.0.0
+	*/
 	public function getMovie($id) {
 		$db = $this->getDbConnection();
 
 		$query = "SELECT * from " . $this->DB_TABLE . " WHERE ID = :id";
 		$statement = $db->prepare($query);
 		$statement->execute(array(':id' => $id));
-		$movie = $statement->fetch(PDO::FETCH_OBJ);
+		$statement->setFetchMode(PDO::FETCH_CLASS, 'FilmotechMovie');
+		$movie = $statement->fetch();
 		$statement->closeCursor();
 
-		$this->improveMovieObject($movie);
+		// $this->improveMovieObject($movie);
 
 		return $movie;
 	}
 
+	/**
+	 * Get movie as HTML code
+	 * @since 1.0.0
+	 */
 	public function getMovieContent($movie) {
 		ob_start();
 		include plugin_dir_path(__FILE__) . 'partials/filmotech-movie-display.php';

@@ -112,6 +112,11 @@ class FilmotechPlugin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-filmotech-i18n.php';
 
 		/**
+		 * The class that define a movie object
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-filmotech-movie.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-filmotech-admin.php';

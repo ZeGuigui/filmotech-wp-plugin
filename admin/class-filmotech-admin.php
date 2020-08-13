@@ -197,6 +197,22 @@ class Filmotech_Admin {
 							'default' => 'list',
 							'show_in_rest' => false,
 							'name' => __('Display style','filmotech')
+						),
+						'filmotech_display_order' => array(
+							'type' => 'string',
+							'description' => __('Sort movies by title or by entered date', 'filmotech'),
+							'sanitize_callback' => 'sanitize_text_field',
+							'default' => 'alpha',
+							'show_in_rest' => false,
+							'name' => __('Sort order','filmotech')
+						),
+						'filmotech_title_to_display' => array(
+							'type' => 'string',
+							'description' => __('Should we display french title or original title in movie list', 'filmotech'),
+							'sanitize_callback' => 'sanitize_text_field',
+							'default' => 'VF',
+							'show_in_rest' => false,
+							'name' => __('Main title','filmotech')
 						)
 				);
 			return $settings;
@@ -271,6 +287,20 @@ class Filmotech_Admin {
 			<select id="filmotech_database_type" name="filmotech_database_type">
 				<option <?php if ($value === 'sqlite') { echo "selected"; } ?> value="sqlite"><?php echo __('SQLite','filmotech'); ?></option>
 				<option <?php if ($value === 'mysql')  { echo "selected"; } ?> value="mysql"><?php echo __('MySQL','filmotech'); ?></option>
+			</select>
+			<?php
+		} elseif ($name == 'filmotech_display_order') {
+			?>
+			<select id="filmotech_display_order" name="filmotech_display_order">
+				<option <?php if ($value === 'alpha') { echo "selected"; } ?> value="alpha"><?php echo __('Title','filmotech'); ?></option>
+				<option <?php if ($value === 'date')  { echo "selected"; } ?> value="date"><?php echo __('Date entered','filmotech'); ?></option>
+			</select>
+			<?php
+		} elseif ($name == 'filmotech_title_to_display') {
+			?>
+			<select id="filmotech_title_to_display" name="filmotech_title_to_display">
+				<option <?php if ($value === 'VF') { echo "selected"; } ?> value="VF"><?php echo __('French title','filmotech'); ?></option>
+				<option <?php if ($value === 'VO') { echo "selected"; } ?> value="VO"><?php echo __('Original title','filmotech'); ?></option>
 			</select>
 			<?php
 		} elseif ($name == 'filmotech_movies_per_page') {
