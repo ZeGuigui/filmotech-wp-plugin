@@ -232,11 +232,7 @@ class Filmotech_Public {
 		$result->setFetchMode(PDO::FETCH_CLASS,'FilmotechMovie');
 		$movies = $result->fetchAll();
 		$result->closeCursor();
-		/*
-		foreach ($movies as $movie) {
-			$this->improveMovieObject($movie);
-		}
-		*/
+
 		ob_start();
 		include plugin_dir_path(__FILE__) . 'partials/filmotech-movie-list.php';
 		$html = ob_get_contents();
@@ -244,26 +240,6 @@ class Filmotech_Public {
 
 		return $html;
 	}
-
-//	public function improveMovieObject($movie) {
-//		// Generate cover URL
-//		global $wp_rewrite;
-//		$link = $wp_rewrite->get_page_permastruct();
-//		$id = absint($movie->ID);
-//
-//		// URLs
-//		if (!empty($link)) {
-//			$movie->permalink = home_url('/') . str_replace('%pagename%', 'filmotech/movie/' . $id . '-' . $movie->TitreVF, $link);
-//			$movie->coverUrl  = home_url('/') . str_replace('%pagename%', 'filmotech/cover/' . $id, $link);
-//		} else {
-//			$movie->permalink = home_url('?filmotech=' . $id);
-//			$movie->coverUrl  = home_url('?filmotech=' . $id . '&cover=1');
-//		}
-//
-//		// Split categories
-//		$movie->Categories = preg_split('/,\\s*/', $movie->Genre);
-//	}
-
 
 	/**
 	* Fetch a movie from database
@@ -278,8 +254,6 @@ class Filmotech_Public {
 		$statement->setFetchMode(PDO::FETCH_CLASS, 'FilmotechMovie');
 		$movie = $statement->fetch();
 		$statement->closeCursor();
-
-		// $this->improveMovieObject($movie);
 
 		return $movie;
 	}
