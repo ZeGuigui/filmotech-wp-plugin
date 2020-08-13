@@ -286,7 +286,7 @@ class Filmotech_Public {
 			$pageDate = current_time( 'mysql' );
 			$gmtDate  = current_time( 'mysql', 1 );
 		} else {
-			$page     = isset($wp_query->query_vars['fp']) ? intval($wp_query->query_vars['fp'],10) : 0;
+			$page     = isset($wp_query->query_vars['fp']) ? intval($wp_query->query_vars['fp'],10) : 1;
 			$title    = __('Filmotech movie list', 'filmotech');
 			$content  = $this->getMovieList($page);
 			$pageDate = current_time( 'mysql' );
