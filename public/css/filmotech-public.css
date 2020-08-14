@@ -60,3 +60,54 @@
   font-size: small;
   color: #888;
 }
+
+#filmotechGridView {
+  overflow: hidden;
+}
+
+#filmotechGridView div.filmotech-movie {
+  float: left;
+  width: 190px;
+  margin: 0 4px 1em 4px;
+}
+
+#filmotechGridView div.filmotech-movie div.cover {
+  height: 300px;
+}
+
+#filmotechGridView div.filmotech-movie div.title {
+  text-align: center;
+  font-size: .8em;
+  height: 3em;
+}
+
+#filmotech-paginator {
+  list-style: none;
+  display: inline-block;
+  padding: 0; margin: 0;
+}
+
+#filmotech-paginator li {
+  display: inline;
+}
+
+#filmotech-paginator li a {
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  height: 40px;
+  border-radius: 5px;
+}
+
+#filmotech-paginator li.currentPage a {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#filmotech-paginator li:not(.currentPage) a:hover {
+  background-color: #ddd;
+}
+
+#filmotech-paginator li.next a {
+  float: right;
+}

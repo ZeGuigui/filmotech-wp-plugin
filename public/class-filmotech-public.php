@@ -228,13 +228,21 @@ class Filmotech_Public {
 		}
 
 		$query = "SELECT ID, TitreVF, TitreVO, Genre, Annee, Edition FROM $this->DB_TABLE order by $sortColumn LIMIT $recordsPerPage OFFSET $offset ";
+		error_log("Query: " . $query);
+
 		$result = $db->query($query);
 		$result->setFetchMode(PDO::FETCH_CLASS,'FilmotechMovie');
 		$movies = $result->fetchAll();
 		$result->closeCursor();
 
 		ob_start();
-		include plugin_dir_path(__FILE__) . 'partials/filmotech-movie-list.php';
+		$displayMode = get_option('filmotech_display_style','list');
+		if ($displayMode == 'list') {
+			include plugin_dir_path(__FILE__) . 'partials/filmotech-movie-list.php';
+		} else {
+			// Grid view
+			include plugin_dir_path(__FILE__) . 'partials/filmotech-grid-view.php';
+		}
 		$html = ob_get_contents();
 		ob_end_clean();
 

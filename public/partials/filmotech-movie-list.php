@@ -48,24 +48,6 @@
 ?>
 </tbody>
 </table>
-<p><?php printf(_n('There is %d movie in the database.','There are %d movies in the database.',$total_record,'filmotech'), $total_record) ?></p>
-
 <?php
- // Add page navigation
- if ($number_of_pages > 1) {
-?>
-<ul class="default-wp-page clearfix">
-  <?php if ($page > 1) { ?>
-     <li style="list-style: none;" class="previous">
-       <a href="<?php echo esc_attr($this->getPageUrl($page - 1)); ?>"><?php _e('← Previous', 'filmotech'); ?></a>
-     </li>
-  <?php } ?>
-  <?php if ($page < $number_of_pages) { ?>
-     <li style="list-style: none;" class="next">
-       <a href="<?php echo esc_attr($this->getPageUrl($page + 1)); ?>"><?php _e('Next →', 'filmotech'); ?></a>
-     </li>
-  <?php } ?>
-</ul>
-<?php
-  }  //end if ($number_of_pages>1)
-?>
+    include plugin_dir_path(__FILE__) . 'filmotech-movie-list-footer.php';
+ ?>

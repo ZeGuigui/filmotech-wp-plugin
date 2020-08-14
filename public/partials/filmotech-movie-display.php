@@ -22,7 +22,7 @@
   <div class="movieEssentials">
     <div class="cover">
         <img
-          alt="<?php  echo esc_attr($movie->TitreVF); ?>"
+          alt="<?php  echo esc_attr($movie->getTitle()); ?>"
           src="<?php echo esc_url($movie->coverUrl) ?>"
         />
         <?php echo esc_html($movie->Edition); ?>
