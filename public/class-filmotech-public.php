@@ -228,7 +228,6 @@ class Filmotech_Public {
 		}
 
 		$query = "SELECT ID, TitreVF, TitreVO, Genre, Annee, Edition FROM $this->DB_TABLE order by $sortColumn LIMIT $recordsPerPage OFFSET $offset ";
-		error_log("Query: " . $query);
 
 		$result = $db->query($query);
 		$result->setFetchMode(PDO::FETCH_CLASS,'FilmotechMovie');
