@@ -49,7 +49,18 @@
   </div>
 
   <div class="moviedetails">
+    <?php
+    if ($movie->BAType == 'URL') {
+    ?>
+    <div class="movieTrailer">
+      <h3><?php _e('Trailer','filmotech'); ?></h3>
+      [video src="<?php echo esc_attr($movie->BAChemin) ?>"]
+    </div>
+    <?php
+    }
+    ?>
     <div class="movie">
+      <h3><?php _e('Details','filmotech'); ?></h3>
       <table>
         <tr>
           <th scope="row"><?php echo __('Realisator','filmotech'); ?></th>

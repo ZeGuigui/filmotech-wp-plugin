@@ -111,3 +111,11 @@
 #filmotech-paginator li.next a {
   float: right;
 }
+
+#filmotech div.movieTrailer {
+  margin: 0 0 2em 0;
+}
+
+#filmotech h3 {
+  font-size: 28px;
+}
