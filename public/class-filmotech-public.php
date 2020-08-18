@@ -234,20 +234,28 @@ class Filmotech_Public {
 		foreach ($categories as $c) {
 			$myCategories = preg_split('/\\s*(,|\\/)\\s*/', $c['Genre']);
 			foreach ($myCategories as $categ) {
-				if ((!empty ($categ)) && (!isset($allCategories[$categ]))) {
-					$allCategories[$categ] = 1;
+				if (!empty ($categ)) {
+					if (!isset($allCategories[$categ])) {
+						$allCategories[$categ] = 0;
+					}
+					$allCategories[$categ]++;
 				}
 			}
 		}
 
-		$filmotechCategories = array_keys($allCategories);
-		asort($filmotechCategories);
-
-		foreach ($filmotechCategories as $fc) {
-			error_log("Category: $fc");
+		$resultCategories = array();
+		foreach ($allCategories as $fc => $cnt) {
+			$rc = array();
+			$rc['name'] = $fc;
+			$rc['count'] = $cnt;
+			$rc['permalink'] = $this->getPageUrl(1, $fc);
+			$resultCategories[] = $rc;
 		}
+		
+		// Sort categories by name
+		usort($resultCategories, function($a,$b) { return strnatcmp($a['name'], $b['name']); });
 
-		return $filmotechCategories;
+		return $resultCategories;
 	}
 
 	/**
@@ -298,7 +306,7 @@ class Filmotech_Public {
 		}
 
 		if ($category !== null) {
-			$result->bindValue(':category', $category, PDO::PARAM_STR);
+			$result->bindValue(':category', '%' . $category . '%', PDO::PARAM_STR);
 		}
 		$result->execute();
 		$result->setFetchMode(PDO::FETCH_CLASS,'FilmotechMovie');
@@ -356,8 +364,6 @@ class Filmotech_Public {
 		// Virtual post
 		$post = new stdClass();
 		global $wp_query;
-
-		error_log("Filmotech query var: " . $wp_query->query_vars['filmotech']);
 
 		$filmotechId = intval($wp_query->query_vars['filmotech'], 10);
 

@@ -183,7 +183,6 @@ class Filmotech_Admin {
 							'type' => 'string',
 							'description' => __('Number of items per page on list of movies', 'filmotech'),
 							'sanitize_callback' => function ($setting) {
-									error_log("sanitize_callback for filmotech_movies_per_page");
 									return absint($setting);
 								},
 							'default' => '20',
