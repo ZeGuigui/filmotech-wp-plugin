@@ -78,7 +78,18 @@ class FilmotechMovie {
 		}
 
 		// Split categories
-		$this->Categories = preg_split('/,\\s*/', $this->Genre);
+    $categories = preg_split('/\\s*(,|\\/)\\s*/', $this->Genre);
+    $this->Categories = array();
+    foreach ($categories as $c) {
+      $categ = array();
+      $categ['name'] = $c;
+      if (!empty($link)) {
+        $categ['permalink'] = home_url('/') . str_replace('%pagename%', "filmotech/category/$c", $link);
+      } else {
+        $categ['permalink'] = home_url("?filmotech=category&fp=1&fc=" . esc_attr($c));
+      }
+      $this->Categories[] = $categ;
+    }
   }
 
   /**

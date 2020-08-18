@@ -33,7 +33,7 @@
           $firstCateg = true;
           foreach ($movie->Categories as $category) {
             if (!$firstCateg) { echo ', '; }
-            echo "<span>" . esc_html($category) . "</span>";
+            echo '<a href="' . esc_attr($category['permalink']) . '">' . esc_html($category['name']) . '</a>';
             $firstCateg = false;
           }
         ?>

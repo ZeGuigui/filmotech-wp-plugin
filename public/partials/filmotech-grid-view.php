@@ -12,6 +12,12 @@
  * @subpackage Filmotech/public/partials
  */
 ?>
+<?php
+  if ($category !== null) {
+    echo "<h3>" . esc_html($category) . "</h3>";
+  }
+?>
+
 <div id="filmotechGridView">
 <?php foreach ($movies as $movie) { ?>
   <div class="filmotech-movie">

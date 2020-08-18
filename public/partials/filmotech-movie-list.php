@@ -13,6 +13,12 @@
  */
 ?>
 
+<?php
+  if ($category !== null) {
+    echo "<h3>" . esc_html($category) . "</h3>";
+  }
+?>
+
 <table id="filmotechMovieList">
 <thead>
   <tr>

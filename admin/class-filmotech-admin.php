@@ -233,6 +233,8 @@ class Filmotech_Admin {
 		$public = new Filmotech_Public($this->plugin_name, $this->version);
 		$db = $public->getDbConnection();
 
+		$public->getAllCategories();
+
 		include plugin_dir_path(__FILE__) . 'partials/filmotech-dashboard-panel.php';
 	}
 
