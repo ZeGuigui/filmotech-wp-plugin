@@ -203,7 +203,7 @@ class Filmotech_Public {
 		if ($category !== null) {
 			$query .= ' WHERE Genre like :category ';
 			$result = $db->prepare($query);
-			$result->bindValue(':category', $category, PDO::PARAM_STR);
+			$result->bindValue(':category', '%' . $category . '%', PDO::PARAM_STR);
 		} else {
 			$result = $db->prepare($query);
 		}
@@ -373,7 +373,7 @@ class Filmotech_Public {
 		} else {
 			$isCategoryIndex = $wp_query->query_vars['filmotech'] == 'category';
 			$page     = isset($wp_query->query_vars['fp']) ? intval($wp_query->query_vars['fp'],10) : 1;
-			$category = $isCategoryIndex ? $wp_query->query_vars['fc'] : null;
+			$category = $isCategoryIndex ? rawurldecode($wp_query->query_vars['fc']) : null;
 			$title    = __('Filmotech movie list', 'filmotech');
 			$content  = $this->getMovieList($page, $isCategoryIndex ? 'alpha' : null, $category);
 			$pageDate = current_time( 'mysql' );
