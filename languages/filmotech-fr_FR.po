@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Filmotech wordpress plugin\n"
-"POT-Creation-Date: 2020-08-17 14:13+0200\n"
-"PO-Revision-Date: 2020-08-17 14:13+0200\n"
+"POT-Creation-Date: 2020-08-19 00:13+0200\n"
+"PO-Revision-Date: 2020-08-19 00:14+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -138,48 +138,48 @@ msgstr "Afficher le titre VF ou le titre VO dans la liste des films"
 msgid "Main title"
 msgstr "Titre principal"
 
-#: admin/class-filmotech-admin.php:225 admin/class-filmotech-admin.php:270
+#: admin/class-filmotech-admin.php:225 admin/class-filmotech-admin.php:272
 msgid "Filmotech"
 msgstr "Filmotech"
 
-#: admin/class-filmotech-admin.php:269
+#: admin/class-filmotech-admin.php:271
 msgid "Filmotech plugin settings"
 msgstr "Paramètres de l’extension Filmotech"
 
-#: admin/class-filmotech-admin.php:288
+#: admin/class-filmotech-admin.php:290
 msgid "SQLite"
 msgstr "SQLite"
 
-#: admin/class-filmotech-admin.php:289
+#: admin/class-filmotech-admin.php:291
 msgid "MySQL"
 msgstr "MySQL"
 
-#: admin/class-filmotech-admin.php:295
-#: public/partials/filmotech-movie-list.php:19
+#: admin/class-filmotech-admin.php:297
+#: public/partials/filmotech-movie-list.php:25
 msgid "Title"
 msgstr "Titre"
 
-#: admin/class-filmotech-admin.php:296
+#: admin/class-filmotech-admin.php:298
 msgid "Date entered"
 msgstr "Date d’ajout"
 
-#: admin/class-filmotech-admin.php:302
+#: admin/class-filmotech-admin.php:304
 msgid "French title"
 msgstr "Titre VF"
 
-#: admin/class-filmotech-admin.php:303
+#: admin/class-filmotech-admin.php:305
 msgid "Original title"
 msgstr "Titre VO"
 
-#: admin/class-filmotech-admin.php:324
+#: admin/class-filmotech-admin.php:326
 msgid "List view"
 msgstr "Mode liste"
 
-#: admin/class-filmotech-admin.php:325
+#: admin/class-filmotech-admin.php:327
 msgid "Grid view"
 msgstr "Mode grille"
 
-#: admin/class-filmotech-admin.php:358
+#: admin/class-filmotech-admin.php:360
 msgid "Filmotech settings"
 msgstr "Réglages Filmotech"
 
@@ -216,12 +216,12 @@ msgstr "Affichez votre collection Filmotech sur votre site Wordpress !"
 msgid "Filmotech database error: %s"
 msgstr "Erreur base de données Filmotech : %s"
 
-#: public/class-filmotech-public.php:226
+#: public/class-filmotech-public.php:281
 #, php-format
 msgid "Unknown sort key: %s"
 msgstr "Clé de tri inconnue : %s"
 
-#: public/class-filmotech-public.php:302
+#: public/class-filmotech-public.php:377
 msgid "Filmotech movie list"
 msgstr "Liste des films Filmotech"
 
@@ -270,22 +270,29 @@ msgstr "Audio"
 msgid "Added to filmotech: %s"
 msgstr "Ajouté à Filmotech : %s"
 
-#: public/partials/filmotech-movie-list-footer.php:1
+#: public/partials/filmotech-movie-list-footer.php:4
 #, php-format
 msgid "There is %d movie in the database."
 msgid_plural "There are %d movies in the database."
 msgstr[0] "Il y a %d film dans la base de données."
 msgstr[1] "Il y a %d films dans la base de données."
 
-#: public/partials/filmotech-movie-list-footer.php:10
+#: public/partials/filmotech-movie-list-footer.php:8
+#, php-format
+msgid "There is %1d movie in the %2s category."
+msgid_plural "There are %1d movies in the %2s category."
+msgstr[0] "Il y a %1d film dans la catégorie %2s."
+msgstr[1] "Il y a %1d films dans la catégorie %2s."
+
+#: public/partials/filmotech-movie-list-footer.php:18
 msgid "← Previous"
 msgstr "← Précédent"
 
-#: public/partials/filmotech-movie-list-footer.php:22
+#: public/partials/filmotech-movie-list-footer.php:30
 msgid "Next →"
 msgstr "Suivant →"
 
-#: public/partials/filmotech-movie-list.php:20
+#: public/partials/filmotech-movie-list.php:26
 msgid "Categories"
 msgstr "Genres"
 
