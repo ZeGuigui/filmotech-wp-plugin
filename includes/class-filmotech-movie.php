@@ -92,6 +92,10 @@ class FilmotechMovie {
     }
   }
 
+  public function hasCategory($categoryName) {
+    return in_array($categoryName, array_column($this->Categories, 'name'));
+  }
+
   /**
    * Return the prefered title of the movie
    * @since 1.0.0

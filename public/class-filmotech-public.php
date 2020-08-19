@@ -195,23 +195,18 @@ class Filmotech_Public {
 	 * @since 1.0.0
 	 */
 	public function getMovieCount($category = null) {
-		$db = $this->getDbConnection();
 
-		$query = "SELECT count(*) from " . $this->DB_TABLE;
-
-		$whereClause = '';
-		if ($category !== null) {
-			$query .= ' WHERE Genre like :category ';
+		if ($category === null) {
+			$db = $this->getDbConnection();
+			$query = "SELECT count(*) from " . $this->DB_TABLE;
 			$result = $db->prepare($query);
-			$result->bindValue(':category', '%' . $category . '%', PDO::PARAM_STR);
+			$result->execute();
+			$result_fetch = $result->fetch();
+			$total_record = $result_fetch[0];
+			$result->closeCursor();
 		} else {
-			$result = $db->prepare($query);
+			$total_record = count($this->getMovieList(-1,'alpha',$category));
 		}
-
-		$result->execute();
-		$result_fetch = $result->fetch();
-		$total_record = $result_fetch[0];
-		$result->closeCursor();
 
 		return $total_record;
 	}
@@ -251,11 +246,36 @@ class Filmotech_Public {
 			$rc['permalink'] = $this->getPageUrl(1, $fc);
 			$resultCategories[] = $rc;
 		}
-		
+
 		// Sort categories by name
 		usort($resultCategories, function($a,$b) { return strnatcmp($a['name'], $b['name']); });
 
 		return $resultCategories;
+	}
+
+	/**
+	 * MoveList to HTML code
+	 * @since 1.0.0
+	 */
+	public function getMovieListHtml($page, $forcedSortKey = null, $category = null) {
+		$movies = $this->getMovieList($page, $forcedSortKey, $category);
+
+		$recordsPerPage = get_option('filmotech_movies_per_page', 20);
+		$total_record    = $this->getMovieCount($category);
+		$number_of_pages = ceil($total_record / $recordsPerPage);
+
+		ob_start();
+		$displayMode = get_option('filmotech_display_style','list');
+		if ($displayMode == 'list') {
+			include plugin_dir_path(__FILE__) . 'partials/filmotech-movie-list.php';
+		} else {
+			// Grid view
+			include plugin_dir_path(__FILE__) . 'partials/filmotech-grid-view.php';
+		}
+		$html = ob_get_contents();
+		ob_end_clean();
+
+		return $html;
 	}
 
 	/**
@@ -264,10 +284,7 @@ class Filmotech_Public {
 	public function getMovieList($page, $forcedSortKey = null, $category = null) {
 		$db = $this->getDbConnection();
 
-		$total_record = $this->getMovieCount($category);
-
 		$recordsPerPage = get_option('filmotech_movies_per_page', 20);
-		$number_of_pages = ceil($total_record / $recordsPerPage);
 		$offset = $offset = ($page-1) * $recordsPerPage;
 
 		if ($forcedSortKey === null) {
@@ -292,13 +309,18 @@ class Filmotech_Public {
 
 		$whereClause = '';
 		if ($category !== null) {
+			// Cannot apply limit on DB side as movies will be filtered once fetched for specified category
 			$whereClause = 'WHERE Genre like :category ';
+			$limit = '';
+		} else {
+			$limit = "LIMIT $recordsPerPage OFFSET $offset ";
 		}
 
 		$query = "SELECT ID, TitreVF, TitreVO, Genre, Annee, Edition " .
 						 "FROM $this->DB_TABLE " .
 						 $whereClause .
-						 "order by $sortColumn LIMIT $recordsPerPage OFFSET $offset ";
+						 "order by $sortColumn " .
+						 $limit;
 	  $result = $db->prepare($query);
 
 		if ($result === false) {
@@ -313,18 +335,19 @@ class Filmotech_Public {
 		$movies = $result->fetchAll();
 		$result->closeCursor();
 
-		ob_start();
-		$displayMode = get_option('filmotech_display_style','list');
-		if ($displayMode == 'list') {
-			include plugin_dir_path(__FILE__) . 'partials/filmotech-movie-list.php';
-		} else {
-			// Grid view
-			include plugin_dir_path(__FILE__) . 'partials/filmotech-grid-view.php';
+		// When category name is given, we need to filter a little bit more
+		// as a category name can be a subpart of another category
+		// ie. Comédie vs Comédie romantique
+		// Pb: less than specified number of items... pagination should be done PHP side vs DB side!
+		if ($category !== null) {
+			$movies = array_filter($movies, function($m) use($category) { return $m->hasCategory($category); });
+			if ($page != -1) {
+				// $page == -1 => all movies (counting!)
+				$movies = array_slice($movies, $offset, $recordsPerPage);
+			}
 		}
-		$html = ob_get_contents();
-		ob_end_clean();
 
-		return $html;
+		return $movies;
 	}
 
 	/**
@@ -381,7 +404,7 @@ class Filmotech_Public {
 			$page     = isset($wp_query->query_vars['fp']) ? intval($wp_query->query_vars['fp'],10) : 1;
 			$category = $isCategoryIndex ? rawurldecode($wp_query->query_vars['fc']) : null;
 			$title    = __('Filmotech movie list', 'filmotech');
-			$content  = $this->getMovieList($page, $isCategoryIndex ? 'alpha' : null, $category);
+			$content  = $this->getMovieListHtml($page, $isCategoryIndex ? 'alpha' : null, $category);
 			$pageDate = current_time( 'mysql' );
 			$gmtDate  = current_time( 'mysql', 1 );
 		}
