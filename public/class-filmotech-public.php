@@ -112,14 +112,15 @@ class Filmotech_Public {
 		$this->version = $version;
 
 		$this->BASE_FOLDER = get_option('filmotech_base_folder', plugin_dir_path(__FILE__));
- 	  $this->DB_TYPE     = get_option('filmotech_database_type', 'sqlite');
- 	  $this->DB_SERVER   = get_option('filmotech_mysql_hostname');
- 	  $this->DB_USER     = get_option('filmotech_mysql_username');
- 	  $this->DB_PASSWORD = get_option('filmotech_mysql_password');
- 	  $this->DB_NAME     = get_option('filmotech_database_name', 'filmotech');
- 	  $this->DB_TABLE    = get_option('filmotech_movies_table_name', 'fmt_movies');
+		$this->DB_TYPE     = get_option('filmotech_database_type', 'sqlite');
+		$this->DB_SERVER   = get_option('filmotech_mysql_hostname');
+		$this->DB_USER     = get_option('filmotech_mysql_username');
+		$this->DB_PASSWORD = get_option('filmotech_mysql_password');
+		$this->DB_NAME     = get_option('filmotech_database_name', 'filmotech');
+		$this->DB_TABLE    = get_option('filmotech_movies_table_name', 'fmt_movies');
 
 		if ($loader !== null) {
+			$loader->add_action('init', $this, 'add_rewrite_rules');
 			$loader->add_filter('query_vars', $this, 'register_filmotech_vars');
 			$loader->add_action('parse_request', $this, 'parse_filmotech_requests');
 			$loader->add_action('wp_enqueue_scripts', $this, 'enqueue_scripts');
@@ -128,6 +129,10 @@ class Filmotech_Public {
 
 	public function enqueue_scripts() {
 		wp_enqueue_style('filmotech_css', plugin_dir_url(__FILE__) . '/css/filmotech-public.css' );
+	}
+
+	public function add_rewrite_rules() {
+		Filmotech_Activator::activate();
 	}
 
 	public function getDbConnection() {
