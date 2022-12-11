@@ -21,5 +21,8 @@ to an https only website.
 
 ## Changelog
 
+### 1.0.1
+* Added an init action to make sure rewrite rules are not lost when other extensions are upgraded
+
 ### 1.0.0
 * Initial version!
