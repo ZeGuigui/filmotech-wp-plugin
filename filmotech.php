@@ -10,7 +10,7 @@
  * Plugin Name:       Filmotech for Wordpress
  * Plugin URI:        https://www.zeguigui.com/filmotech-wordpress-plugin
  * Description:       Display your filmotech collection inside your Wordpress website!
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Guillaume Lapierre
  * Author URI:        https://www.zeguigui.com
  * License:           GPL-2.0+
