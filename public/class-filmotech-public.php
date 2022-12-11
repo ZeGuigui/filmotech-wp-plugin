@@ -132,6 +132,7 @@ class Filmotech_Public {
 	}
 
 	public function add_rewrite_rules() {
+		require_once plugin_dir_path( __FILE__ ) . '../includes/class-filmotech-activator.php';
 		Filmotech_Activator::activate();
 	}
 
