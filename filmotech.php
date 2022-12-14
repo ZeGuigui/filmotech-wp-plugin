@@ -10,7 +10,7 @@
  * Plugin Name:       Filmotech Databasse Viewer
  * Plugin URI:        https://github.com/ZeGuigui/filmotech-wp-plugin
  * Description:       Display your filmotech collection inside your website!
- * Version:           1.0.1
+ * Version:           1.1.0
  * Author:            Guillaume Lapierre
  * Author URI:        https://www.zeguigui.com
  * License:           GPL-2.0+

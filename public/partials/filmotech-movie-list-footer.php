@@ -21,8 +21,8 @@
   <?php for ($i = 1; $i <= $number_of_pages; $i++) {
           $suppClass = ($i == $page) ? ' currentPage' : '';
     ?>
-    <li class="pageNumber<?php echo $suppClass; ?>">
-      <a href="<?php echo esc_attr($this->getPageUrl($i, $category)); ?>"><?php echo $i ?></a>
+    <li class="pageNumber<?php echo esc_attr($suppClass); ?>">
+      <a href="<?php echo esc_attr($this->getPageUrl($i, $category)); ?>"><?php echo esc_html($i) ?></a>
     </li>
   <?php } ?>
   <?php if ($page < $number_of_pages) { ?>

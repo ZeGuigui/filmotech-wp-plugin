@@ -508,22 +508,19 @@ class Filmotech_Public {
 					header("Cache-Control: max-age=" . BROWSER_CACHE_LIFETIME );
 					header("Pragma:");
 					header("ETag: " . md5_file($coverFile));
-					echo $cover;
+					echo $cover;	// jpg/png binary file directly served to the user. Do not escape!
 				} else {
 					//TODO Return a default cover... 404 in the meanwhile!
 					header("HTTP/1.0 404 Not Found", false, 404);
-					echo <<<EOF
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-<head>
-<title>Cover not found</title>
-</head>
-<body>
-<p>Cover not found... so sad!</p>
-</body>
-</html>
-EOF;
+					echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . PHP_EOL .
+						 '<html>' . PHP_EOL . 
+						 '<head>' . PHP_EOL . 
+						 '<title>Cover not found</title>' . PHP_EOL . 
+						 '</head>' . PHP_EOL . 
+						 '<body>' . PHP_EOL . 
+						 '<p>Cover not found... so sad!</p>' . PHP_EOL . 
+						 '</body>' . PHP_EOL . 
+						 '</html>';
 				}
 				die;
 			}
