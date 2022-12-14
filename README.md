@@ -22,6 +22,9 @@ to an https only website. Publishing to a MySQL/MariaDB database is not yet supp
 
 ## Changelog
 
+### 1.1.0
+* improved code based on wordpress review
+
 ### 1.0.1
 * Added an init action to make sure rewrite rules are not lost when other extensions are upgraded
 
