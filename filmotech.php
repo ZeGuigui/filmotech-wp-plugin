@@ -7,9 +7,9 @@
  * @package           Filmotech
  *
  * @wordpress-plugin
- * Plugin Name:       Filmotech for Wordpress
- * Plugin URI:        https://www.zeguigui.com/filmotech-wordpress-plugin
- * Description:       Display your filmotech collection inside your Wordpress website!
+ * Plugin Name:       Filmotech Databasse Viewer
+ * Plugin URI:        https://github.com/ZeGuigui/filmotech-wp-plugin
+ * Description:       Display your filmotech collection inside your website!
  * Version:           1.0.1
  * Author:            Guillaume Lapierre
  * Author URI:        https://www.zeguigui.com
@@ -31,8 +31,8 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'PLUGIN_NAME_VERSION', '1.0.1' );
 
-define ('FILMOTECH_PLUGIN_NAME', __('Filmotech for Wordpress','filmotech'));
-define ('FILMOTECH_PLUGIN_DESC', __('Display your filmotech collection inside your Wordpress website!','filmotech'));
+define ('FILMOTECH_PLUGIN_NAME', __('Filmotech Database Viewer','filmotech'));
+define ('FILMOTECH_PLUGIN_DESC', __('Display your filmotech collection inside your website!','filmotech'));
 
 /**
  * The code that runs during plugin activation.

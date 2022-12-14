@@ -1,17 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Filmotech wordpress plugin\n"
-"POT-Creation-Date: 2020-08-19 00:13+0200\n"
-"PO-Revision-Date: 2020-08-19 00:14+0200\n"
+"Project-Id-Version: Filmotech database viewer\n"
+"POT-Creation-Date: 2022-12-11 11:40+0100\n"
+"PO-Revision-Date: 2022-12-11 11:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4\n"
-"X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_n_noop:1,2;_nx:1,2;_ns_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -110,76 +110,76 @@ msgstr "Mot de passe MySQL"
 msgid "Number of items per page on list of movies"
 msgstr "Nombre d’éléments par page sur la liste des films"
 
-#: admin/class-filmotech-admin.php:191
+#: admin/class-filmotech-admin.php:190
 msgid "Items per page"
 msgstr "Éléments par page"
 
-#: admin/class-filmotech-admin.php:195
+#: admin/class-filmotech-admin.php:194
 msgid "List of movies should display a table view or grid view"
 msgstr "Mode d’affichage de la liste des films : liste ou grille"
 
-#: admin/class-filmotech-admin.php:199
+#: admin/class-filmotech-admin.php:198
 msgid "Display style"
 msgstr "Mode d’affichage"
 
-#: admin/class-filmotech-admin.php:203
+#: admin/class-filmotech-admin.php:202
 msgid "Sort movies by title or by entered date"
 msgstr "Trier les films par ordre alphabétique ou par date d’ajout"
 
-#: admin/class-filmotech-admin.php:207
+#: admin/class-filmotech-admin.php:206
 msgid "Sort order"
 msgstr "Ordre de tri"
 
-#: admin/class-filmotech-admin.php:211
+#: admin/class-filmotech-admin.php:210
 msgid "Should we display french title or original title in movie list"
 msgstr "Afficher le titre VF ou le titre VO dans la liste des films"
 
-#: admin/class-filmotech-admin.php:215
+#: admin/class-filmotech-admin.php:214
 msgid "Main title"
 msgstr "Titre principal"
 
-#: admin/class-filmotech-admin.php:225 admin/class-filmotech-admin.php:272
+#: admin/class-filmotech-admin.php:224 admin/class-filmotech-admin.php:271
 msgid "Filmotech"
 msgstr "Filmotech"
 
-#: admin/class-filmotech-admin.php:271
+#: admin/class-filmotech-admin.php:270
 msgid "Filmotech plugin settings"
 msgstr "Paramètres de l’extension Filmotech"
 
-#: admin/class-filmotech-admin.php:290
+#: admin/class-filmotech-admin.php:289
 msgid "SQLite"
 msgstr "SQLite"
 
-#: admin/class-filmotech-admin.php:291
+#: admin/class-filmotech-admin.php:290
 msgid "MySQL"
 msgstr "MySQL"
 
-#: admin/class-filmotech-admin.php:297
+#: admin/class-filmotech-admin.php:296
 #: public/partials/filmotech-movie-list.php:25
 msgid "Title"
 msgstr "Titre"
 
-#: admin/class-filmotech-admin.php:298
+#: admin/class-filmotech-admin.php:297
 msgid "Date entered"
 msgstr "Date d’ajout"
 
-#: admin/class-filmotech-admin.php:304
+#: admin/class-filmotech-admin.php:303
 msgid "French title"
 msgstr "Titre VF"
 
-#: admin/class-filmotech-admin.php:305
+#: admin/class-filmotech-admin.php:304
 msgid "Original title"
 msgstr "Titre VO"
 
-#: admin/class-filmotech-admin.php:326
+#: admin/class-filmotech-admin.php:325
 msgid "List view"
 msgstr "Mode liste"
 
-#: admin/class-filmotech-admin.php:327
+#: admin/class-filmotech-admin.php:326
 msgid "Grid view"
 msgstr "Mode grille"
 
-#: admin/class-filmotech-admin.php:360
+#: admin/class-filmotech-admin.php:359
 msgid "Filmotech settings"
 msgstr "Réglages Filmotech"
 
@@ -204,24 +204,24 @@ msgid "View filmotech database"
 msgstr "Voir la base filmotech"
 
 #: filmotech.php:34
-msgid "Filmotech for Wordpress"
-msgstr "Filmotech pour Wordpress"
+msgid "Filmotech Database Viewer"
+msgstr ""
 
 #: filmotech.php:35
-msgid "Display your filmotech collection inside your Wordpress website!"
-msgstr "Affichez votre collection Filmotech sur votre site Wordpress !"
+msgid "Display your filmotech collection inside your website!"
+msgstr "Affichez votre collection Filmotech sur votre site internet !"
 
-#: public/class-filmotech-public.php:145
+#: public/class-filmotech-public.php:151
 #, php-format
 msgid "Filmotech database error: %s"
 msgstr "Erreur base de données Filmotech : %s"
 
-#: public/class-filmotech-public.php:281
+#: public/class-filmotech-public.php:312
 #, php-format
 msgid "Unknown sort key: %s"
 msgstr "Clé de tri inconnue : %s"
 
-#: public/class-filmotech-public.php:377
+#: public/class-filmotech-public.php:412
 msgid "Filmotech movie list"
 msgstr "Liste des films Filmotech"
 
